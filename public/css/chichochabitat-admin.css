@@ -1,0 +1,277 @@
+/* ==========================================================================
+   ChiChoc-Habitat — Filament back-office theme
+   Loaded after Filament's compiled CSS so these rules win.
+   Palette: void #090C10 · glass rgba(255,255,255,.05) · neon #66BB6A
+   ========================================================================== */
+
+:root {
+    --cch-void: #090c10;
+    --cch-void-raised: #0e1319;
+    --cch-glass: rgba(255, 255, 255, 0.05);
+    --cch-glass-strong: rgba(255, 255, 255, 0.075);
+    --cch-hairline: rgba(255, 255, 255, 0.1);
+    --cch-neon: #66bb6a;
+    --cch-neon-bright: #7ed688;
+    --cch-heading: #e8f5e9;
+    --cch-body: #a5d6a7;
+}
+
+/* ---------------------------- Base canvas ---------------------------- */
+
+html.dark,
+.dark body,
+body.fi-body {
+    background-color: var(--cch-void) !important;
+    color: var(--cch-heading) !important;
+    background-image:
+        radial-gradient(72rem 40rem at 12% -12%, rgba(102, 187, 106, 0.10), transparent 62%),
+        radial-gradient(60rem 40rem at 96% 6%, rgba(102, 187, 106, 0.05), transparent 58%) !important;
+    background-repeat: no-repeat !important;
+}
+
+/* ------------------------------- Top bar ------------------------------ */
+
+.fi-topbar,
+.fi-topbar > nav {
+    background-color: rgba(9, 12, 16, 0.82) !important;
+    backdrop-filter: blur(18px) saturate(160%);
+    -webkit-backdrop-filter: blur(18px) saturate(160%);
+    border-bottom: 1px solid var(--cch-hairline) !important;
+    color: var(--cch-heading) !important;
+    box-shadow: none !important;
+}
+
+.fi-topbar a,
+.fi-topbar button,
+.fi-topbar .fi-icon-btn {
+    color: var(--cch-body) !important;
+}
+
+.fi-topbar a:hover,
+.fi-topbar button:hover {
+    color: var(--cch-heading) !important;
+}
+
+/* ------------------------------- Sidebar ------------------------------ */
+
+.fi-sidebar,
+.fi-sidebar-nav {
+    background-color: rgba(14, 19, 25, 0.7) !important;
+    backdrop-filter: blur(20px) saturate(160%);
+    -webkit-backdrop-filter: blur(20px) saturate(160%);
+    border-right: 1px solid var(--cch-hairline) !important;
+}
+
+.fi-sidebar-item a,
+.fi-sidebar-item-button {
+    border-radius: 0.7rem !important;
+    color: var(--cch-body) !important;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.fi-sidebar-item a:hover,
+.fi-sidebar-item-button:hover {
+    background-color: rgba(255, 255, 255, 0.06) !important;
+    color: var(--cch-heading) !important;
+}
+
+/* Active nav state — the signature green bar from the design system. */
+.fi-sidebar-item.fi-active > a,
+.fi-sidebar-item.fi-active .fi-sidebar-item-button,
+.fi-sidebar-item-button[aria-current='page'] {
+    background-color: rgba(102, 187, 106, 0.12) !important;
+    color: var(--cch-heading) !important;
+    box-shadow: inset 2px 0 0 var(--cch-neon) !important;
+}
+
+.fi-sidebar-item.fi-active .fi-sidebar-item-icon,
+.fi-sidebar-item-icon {
+    color: var(--cch-neon) !important;
+}
+
+.fi-sidebar-group-label {
+    color: rgba(165, 214, 167, 0.55) !important;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-size: 0.6875rem;
+}
+
+/* ---------------------------- Glass surfaces -------------------------- */
+
+.fi-section,
+.fi-ta-ctn,
+.fi-wi-stats-overview-stat,
+.fi-modal-window,
+.fi-dropdown-panel,
+.fi-fo-component-ctn > .fi-section {
+    background-color: var(--cch-glass) !important;
+    backdrop-filter: blur(20px) saturate(160%);
+    -webkit-backdrop-filter: blur(20px) saturate(160%);
+    border: 1px solid var(--cch-hairline) !important;
+    border-radius: 1.25rem !important;
+    box-shadow: 0 18px 50px -28px rgba(0, 0, 0, 0.9) !important;
+}
+
+.fi-section-header,
+.fi-ta-header,
+.fi-wi-stats-overview-stat .fi-wi-stats-overview-stat-content {
+    background-color: transparent !important;
+    border-color: var(--cch-hairline) !important;
+}
+
+.fi-section-header-heading,
+.fi-ta-header-cell-label,
+.fi-wi-stats-overview-stat-label {
+    color: var(--cch-body) !important;
+}
+
+.fi-wi-stats-overview-stat-value {
+    color: var(--cch-heading) !important;
+    letter-spacing: -0.03em;
+}
+
+.fi-wi-stats-overview-stat-description {
+    color: rgba(165, 214, 167, 0.7) !important;
+}
+
+/* -------------------------------- Tables ------------------------------ */
+
+.fi-ta-table thead {
+    background-color: rgba(255, 255, 255, 0.03) !important;
+}
+
+.fi-ta-row {
+    border-color: rgba(255, 255, 255, 0.06) !important;
+}
+
+.fi-ta-row:hover {
+    background-color: rgba(255, 255, 255, 0.04) !important;
+}
+
+.fi-ta-cell,
+.fi-ta-text,
+.fi-ta-text-item {
+    color: var(--cch-heading) !important;
+}
+
+.fi-ta-text-description {
+    color: rgba(165, 214, 167, 0.6) !important;
+}
+
+/* --------------------------- Inputs & buttons ------------------------- */
+
+.fi-input,
+.fi-select-input,
+.fi-textarea,
+.fi-fo-field-wrp input,
+.fi-fo-field-wrp textarea,
+.fi-fo-field-wrp select {
+    background-color: rgba(255, 255, 255, 0.04) !important;
+    border-color: var(--cch-hairline) !important;
+    color: var(--cch-heading) !important;
+    border-radius: 0.7rem !important;
+}
+
+.fi-input:focus,
+.fi-select-input:focus,
+.fi-textarea:focus {
+    border-color: var(--cch-neon) !important;
+    box-shadow: 0 0 0 3px rgba(102, 187, 106, 0.18) !important;
+}
+
+.fi-fo-field-wrp-label,
+.fi-fo-field-wrp label {
+    color: rgba(165, 214, 167, 0.8) !important;
+}
+
+.fi-btn {
+    border-radius: 999px !important;
+    font-weight: 600 !important;
+    transition: box-shadow 0.3s ease, background-color 0.2s ease !important;
+}
+
+.fi-btn-color-primary {
+    background-color: var(--cch-neon) !important;
+    color: var(--cch-void) !important;
+}
+
+.fi-btn-color-primary:hover {
+    background-color: var(--cch-neon-bright) !important;
+    box-shadow: 0 10px 30px -8px rgba(102, 187, 106, 0.55), 0 0 42px -6px rgba(102, 187, 106, 0.35) !important;
+}
+
+.fi-btn-color-gray,
+.fi-btn-color-white {
+    background-color: rgba(255, 255, 255, 0.06) !important;
+    color: var(--cch-heading) !important;
+    border: 1px solid var(--cch-hairline) !important;
+}
+
+/* -------------------------------- Tabs -------------------------------- */
+
+.fi-tabs-item {
+    border-radius: 999px !important;
+    color: var(--cch-body) !important;
+}
+
+.fi-tabs-item.fi-active {
+    background-color: var(--cch-neon) !important;
+    color: var(--cch-void) !important;
+}
+
+/* ------------------------------- Badges ------------------------------- */
+
+.fi-badge {
+    border-radius: 999px !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.01em;
+}
+
+/* ------------------------------ Overlays ------------------------------ */
+
+.fi-modal-close-btn,
+.fi-dropdown-list-item {
+    color: var(--cch-heading) !important;
+}
+
+.fi-dropdown-list-item:hover {
+    background-color: rgba(255, 255, 255, 0.06) !important;
+}
+
+/* ---------------------------- Login screen ---------------------------- */
+
+.fi-simple-layout {
+    background-color: var(--cch-void) !important;
+    background-image:
+        radial-gradient(48rem 30rem at 50% 0%, rgba(102, 187, 106, 0.14), transparent 62%) !important;
+}
+
+.fi-simple-main {
+    background-color: var(--cch-glass-strong) !important;
+    backdrop-filter: blur(28px) saturate(160%);
+    -webkit-backdrop-filter: blur(28px) saturate(160%);
+    border: 1px solid rgba(255, 255, 255, 0.14) !important;
+    border-radius: 1.5rem !important;
+    box-shadow: 0 40px 120px -30px rgba(0, 0, 0, 0.95) !important;
+}
+
+/* ------------------------------ Scrollbar ----------------------------- */
+
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--cch-void);
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.12);
+    border-radius: 999px;
+    border: 2px solid var(--cch-void);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(102, 187, 106, 0.45);
+}

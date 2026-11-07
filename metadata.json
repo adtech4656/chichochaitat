@@ -1,0 +1,8 @@
+{
+  "name": "ChiChoc-Habitat",
+  "description": "Verified real estate marketplace in Côte d’Ivoire featuring GPS-verified photography, KYC-checked agents, and secure transactions.",
+  "permissions": [],
+  "capabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

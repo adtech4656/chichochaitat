@@ -1,0 +1,1052 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "name": "Koffi Kouamé",
+      "username": "kouame",
+      "email": "kouame@example.com",
+      "phone": "+225 07 12 34 56",
+      "passwordHash": "$2b$10$DoGNRDVt003i5aEvZDlkLO1/351hPOLKYVPqfIeN/6KyR429iKjbe",
+      "role": "customer",
+      "initials": "KK",
+      "permissions": [
+        "view_properties",
+        "create_offers",
+        "send_messages"
+      ],
+      "member_since": "October 2025",
+      "saved_properties": [
+        4,
+        7,
+        9,
+        1
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Aya Koffi",
+      "username": "ayakoffi",
+      "email": "aya@koffi-immobilier.ci",
+      "phone": "+225 07 00 00 01",
+      "passwordHash": "$2b$10$DoGNRDVt003i5aEvZDlkLO1/351hPOLKYVPqfIeN/6KyR429iKjbe",
+      "role": "agent",
+      "initials": "AK",
+      "permissions": [
+        "view_properties",
+        "manage_properties",
+        "receive_chats"
+      ],
+      "member_since": "March 2021",
+      "saved_properties": [],
+      "price_drop_subscriptions": []
+    },
+    {
+      "id": 3,
+      "name": "Jean-Marc Diallo",
+      "username": "jmdiallo",
+      "email": "jeanmarc@atlas.ci",
+      "phone": "+225 07 00 00 02",
+      "passwordHash": "$2b$10$DoGNRDVt003i5aEvZDlkLO1/351hPOLKYVPqfIeN/6KyR429iKjbe",
+      "role": "agent",
+      "initials": "JD",
+      "permissions": [
+        "view_properties",
+        "manage_properties",
+        "receive_chats"
+      ],
+      "member_since": "January 2022",
+      "saved_properties": []
+    },
+    {
+      "id": 4,
+      "name": "Admin ChiChoc",
+      "username": "admin",
+      "email": "admin@chichochabitat.ci",
+      "phone": "+225 07 99 99 99",
+      "passwordHash": "$2b$10$KY/dcAWPqCiJG3xAbRPu0eU7rchvxiPKQLv6n39Ya/8PuIdJaveLu",
+      "role": "admin",
+      "initials": "AC",
+      "permissions": [
+        "view_admin",
+        "verify_properties",
+        "manage_users",
+        "site_settings"
+      ],
+      "member_since": "January 2020",
+      "saved_properties": []
+    }
+  ],
+  "properties": [
+    {
+      "id": 1,
+      "slug": "mansard-view-residence",
+      "title": "Mansard View Residence",
+      "location": "Cocody, Abidjan",
+      "district": "Cocody",
+      "city": "Abidjan",
+      "price": 54000000,
+      "currency": "XOF",
+      "intent": "sale",
+      "intent_label": "For sale",
+      "type": "House",
+      "bedrooms": 4,
+      "bathrooms": 3,
+      "area": 280,
+      "image": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1400&q=80",
+      "gallery": [
+        "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1600&q=80",
+        "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1600&q=80",
+        "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=1600&q=80",
+        "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1600&q=80"
+      ],
+      "agent": {
+        "id": 1,
+        "name": "Aya Koffi",
+        "agency": "Koffi & Co. Immobilier",
+        "initials": "AK",
+        "rating": 4.9,
+        "deals": 128,
+        "verified": true,
+        "since": "2021",
+        "response": "Under 10 min",
+        "phone": "+225 07 00 00 01"
+      },
+      "tags": [
+        "Pool",
+        "Garden",
+        "Parking",
+        "Security",
+        "Solar"
+      ],
+      "description": "A calm, light-filled family home set back from the road in Cocody. Double-height living space opens onto a shaded terrace and a filtered pool, with a separate service wing and covered parking for two cars. Every photograph in this listing was captured on site with GPS and timestamp verification.",
+      "lat": 5.3599,
+      "lng": -3.9866,
+      "published": "2026-09-28",
+      "views": 1284,
+      "href": "/properties/mansard-view-residence",
+      "verified": {
+        "agent": true,
+        "location": true,
+        "photos": true,
+        "video": true,
+        "documents": true,
+        "reviewer": "Admin Team",
+        "reviewed_at": "2026-10-31"
+      }
+    },
+    {
+      "id": 2,
+      "slug": "sunset-creek-villa",
+      "title": "Sunset Creek Villa",
+      "location": "Riviera, Abidjan",
+      "district": "Riviera",
+      "city": "Abidjan",
+      "price": 38500000,
+      "currency": "XOF",
+      "intent": "sale",
+      "intent_label": "For sale",
+      "type": "House",
+      "bedrooms": 3,
+      "bathrooms": 2,
+      "area": 220,
+      "image": "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1400&q=80",
+      "gallery": [
+        "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1600&q=80",
+        "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=1600&q=80",
+        "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1600&q=80"
+      ],
+      "agent": {
+        "id": 2,
+        "name": "Jean-Marc Diallo",
+        "agency": "Atlas Habitat",
+        "initials": "JD",
+        "rating": 4.8,
+        "deals": 94,
+        "verified": true,
+        "since": "2022",
+        "response": "Under 30 min",
+        "phone": "+225 07 00 00 02"
+      },
+      "tags": [
+        "Garden",
+        "Parking",
+        "Security",
+        "Borehole"
+      ],
+      "description": "Quiet villa with a mature garden and room to extend. The kitchen was renovated in 2024 and the roof was replaced the same year. Title documents have been reviewed by our legal team.",
+      "lat": 5.3673,
+      "lng": -3.9551,
+      "published": "2026-10-02",
+      "views": 941,
+      "href": "/properties/sunset-creek-villa",
+      "verified": {
+        "agent": true,
+        "location": true,
+        "photos": true,
+        "video": true,
+        "documents": true,
+        "reviewer": "Technical review · K. Mensah",
+        "reviewed_at": "2026-10-02"
+      }
+    },
+    {
+      "id": 3,
+      "slug": "atelier-loft-plateau",
+      "title": "Atelier Loft — Plateau",
+      "location": "Plateau, Abidjan",
+      "district": "Plateau",
+      "city": "Abidjan",
+      "price": 1250000,
+      "currency": "XOF",
+      "intent": "rent",
+      "intent_label": "Per month",
+      "type": "House",
+      "bedrooms": 2,
+      "bathrooms": 2,
+      "area": 118,
+      "image": "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1400&q=80",
+      "gallery": [
+        "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1600&q=80",
+        "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1600&q=80"
+      ],
+      "agent": {
+        "id": 3,
+        "name": "Fatou Bamba",
+        "agency": "Ivoire Estates",
+        "initials": "FB",
+        "rating": 4.7,
+        "deals": 61,
+        "verified": true,
+        "since": "2023",
+        "response": "Same day",
+        "phone": "+225 07 00 00 03"
+      },
+      "tags": [
+        "Furnished",
+        "Air conditioning",
+        "Elevator",
+        "Security"
+      ],
+      "description": "Converted loft minutes from the Plateau business district. Furnished, air-conditioned, and available immediately on a twelve-month minimum term.",
+      "lat": 5.3242,
+      "lng": -4.0161,
+      "published": "2026-10-08",
+      "views": 612,
+      "href": "/properties/atelier-loft-plateau",
+      "verified": {
+        "agent": true,
+        "location": true,
+        "photos": true,
+        "video": true,
+        "documents": true,
+        "reviewer": "Technical review · K. Mensah",
+        "reviewed_at": "2026-10-08"
+      }
+    },
+    {
+      "id": 4,
+      "slug": "cocody-garden-estate",
+      "title": "Cocody Garden Estate",
+      "location": "Angré, Abidjan",
+      "district": "Angré",
+      "city": "Abidjan",
+      "price": 76000000,
+      "currency": "XOF",
+      "intent": "sale",
+      "intent_label": "For sale",
+      "type": "House",
+      "bedrooms": 5,
+      "bathrooms": 4,
+      "area": 410,
+      "image": "https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&w=1400&q=80",
+      "gallery": [
+        "https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&w=1600&q=80",
+        "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1600&q=80"
+      ],
+      "agent": {
+        "id": 1,
+        "name": "Aya Koffi",
+        "agency": "Koffi & Co. Immobilier",
+        "initials": "AK",
+        "rating": 4.9,
+        "deals": 128,
+        "verified": true,
+        "since": "2021",
+        "response": "Under 10 min",
+        "phone": "+225 07 00 00 01"
+      },
+      "tags": [
+        "Pool",
+        "Garden",
+        "Parking",
+        "Security",
+        "Solar"
+      ],
+      "description": "A five-bedroom estate on a 900 m² titled plot, with staff quarters, a pool, and a solar array that covers daytime load.",
+      "lat": 5.4028,
+      "lng": -3.9702,
+      "published": "2026-09-19",
+      "views": 2104,
+      "href": "/properties/cocody-garden-estate",
+      "verified": {
+        "agent": true,
+        "location": true,
+        "photos": true,
+        "video": true,
+        "documents": true,
+        "reviewer": "Technical review · K. Mensah",
+        "reviewed_at": "2026-09-19"
+      }
+    },
+    {
+      "id": 5,
+      "slug": "palm-ridge-plot",
+      "title": "Palm Ridge Titled Plot",
+      "location": "Bingerville, Abidjan",
+      "district": "Bingerville",
+      "city": "Abidjan",
+      "price": 18900000,
+      "currency": "XOF",
+      "intent": "sale",
+      "intent_label": "For sale",
+      "type": "Land",
+      "bedrooms": 0,
+      "bathrooms": 0,
+      "area": 600,
+      "image": "https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1400&q=80",
+      "gallery": [
+        "https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1600&q=80"
+      ],
+      "agent": {
+        "id": 2,
+        "name": "Jean-Marc Diallo",
+        "agency": "Atlas Habitat",
+        "initials": "JD",
+        "rating": 4.8,
+        "deals": 94,
+        "verified": true,
+        "since": "2022",
+        "response": "Under 30 min",
+        "phone": "+225 07 00 00 02"
+      },
+      "tags": [
+        "Titled",
+        "Corner plot",
+        "Road access"
+      ],
+      "description": "Corner plot with an ADU certificate on file and clear road access. Ideal for a duplex or a small residence.",
+      "lat": 5.3556,
+      "lng": -3.8836,
+      "published": "2026-10-11",
+      "views": 388,
+      "href": "/properties/palm-ridge-plot",
+      "verified": {
+        "agent": true,
+        "location": true,
+        "photos": true,
+        "video": true,
+        "documents": true,
+        "reviewer": "Technical review · K. Mensah",
+        "reviewed_at": "2026-10-11"
+      }
+    },
+    {
+      "id": 6,
+      "slug": "marina-court-commercial",
+      "title": "Marina Court Commercial",
+      "location": "Marcory, Abidjan",
+      "district": "Marcory",
+      "city": "Abidjan",
+      "price": 2400000,
+      "currency": "XOF",
+      "intent": "rent",
+      "intent_label": "Per month",
+      "type": "Shop",
+      "bedrooms": 0,
+      "bathrooms": 1,
+      "area": 95,
+      "image": "https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1400&q=80",
+      "gallery": [
+        "https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1600&q=80"
+      ],
+      "agent": {
+        "id": 3,
+        "name": "Fatou Bamba",
+        "agency": "Ivoire Estates",
+        "initials": "FB",
+        "rating": 4.7,
+        "deals": 61,
+        "verified": true,
+        "since": "2023",
+        "response": "Same day",
+        "phone": "+225 07 00 00 03"
+      },
+      "tags": [
+        "Street frontage",
+        "Parking",
+        "Security",
+        "Air conditioning"
+      ],
+      "description": "Ground-floor retail unit with nine metres of street frontage in a high-footfall stretch of Marcory.",
+      "lat": 5.3021,
+      "lng": -3.9905,
+      "published": "2026-10-14",
+      "views": 274,
+      "href": "/properties/marina-court-commercial",
+      "verified": {
+        "agent": true,
+        "location": true,
+        "photos": true,
+        "video": true,
+        "documents": true,
+        "reviewer": "Technical review · K. Mensah",
+        "reviewed_at": "2026-10-14"
+      }
+    },
+    {
+      "id": 7,
+      "slug": "lagune-bleue-hotel",
+      "title": "Lagune Bleue Boutique Hotel",
+      "location": "Grand-Bassam, Grand-Bassam",
+      "district": "Grand-Bassam",
+      "city": "Grand-Bassam",
+      "price": 285000000,
+      "currency": "XOF",
+      "intent": "sale",
+      "intent_label": "For sale",
+      "type": "Hotel",
+      "bedrooms": 18,
+      "bathrooms": 18,
+      "area": 1250,
+      "image": "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=1400&q=80",
+      "gallery": [
+        "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=1600&q=80",
+        "https://images.unsplash.com/photo-1445019980597-93fa8acb246c?auto=format&fit=crop&w=1600&q=80"
+      ],
+      "agent": {
+        "id": 1,
+        "name": "Aya Koffi",
+        "agency": "Koffi & Co. Immobilier",
+        "initials": "AK",
+        "rating": 4.9,
+        "deals": 128,
+        "verified": true,
+        "since": "2021",
+        "response": "Under 10 min",
+        "phone": "+225 07 00 00 01"
+      },
+      "tags": [
+        "Pool",
+        "Restaurant",
+        "Beachfront",
+        "Security"
+      ],
+      "description": "Eighteen-key boutique property on the lagoon side of Grand-Bassam, trading since 2019 with an established bookings base.",
+      "lat": 5.2058,
+      "lng": -3.7386,
+      "published": "2026-09-08",
+      "views": 3320,
+      "href": "/properties/lagune-bleue-hotel",
+      "verified": {
+        "agent": true,
+        "location": true,
+        "photos": true,
+        "video": true,
+        "documents": true,
+        "reviewer": "Technical review · K. Mensah",
+        "reviewed_at": "2026-09-08"
+      }
+    },
+    {
+      "id": 8,
+      "slug": "akwaba-family-home",
+      "title": "Akwaba Family Home",
+      "location": "Yopougon, Abidjan",
+      "district": "Yopougon",
+      "city": "Abidjan",
+      "price": 24500000,
+      "currency": "XOF",
+      "intent": "sale",
+      "intent_label": "For sale",
+      "type": "House",
+      "bedrooms": 3,
+      "bathrooms": 2,
+      "area": 165,
+      "image": "https://images.unsplash.com/photo-1568605114967-8130f3a36994?auto=format&fit=crop&w=1400&q=80",
+      "gallery": [
+        "https://images.unsplash.com/photo-1568605114967-8130f3a36994?auto=format&fit=crop&w=1600&q=80",
+        "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1600&q=80"
+      ],
+      "agent": {
+        "id": 2,
+        "name": "Jean-Marc Diallo",
+        "agency": "Atlas Habitat",
+        "initials": "JD",
+        "rating": 4.8,
+        "deals": 94,
+        "verified": true,
+        "since": "2022",
+        "response": "Under 30 min",
+        "phone": "+225 07 00 00 02"
+      },
+      "tags": [
+        "Garden",
+        "Parking",
+        "Borehole"
+      ],
+      "description": "Practical three-bedroom home on a quiet residential street, within walking distance of schools and a market.",
+      "lat": 5.3364,
+      "lng": -4.0856,
+      "published": "2026-10-05",
+      "views": 733,
+      "href": "/properties/akwaba-family-home",
+      "verified": {
+        "agent": true,
+        "location": true,
+        "photos": true,
+        "video": true,
+        "documents": true,
+        "reviewer": "Technical review · K. Mensah",
+        "reviewed_at": "2026-10-05"
+      }
+    },
+    {
+      "id": 9,
+      "slug": "riviera-terrace-duplex",
+      "title": "Riviera Terrace Duplex",
+      "location": "Riviera 4, Abidjan",
+      "district": "Riviera 4",
+      "city": "Abidjan",
+      "price": 1800000,
+      "currency": "XOF",
+      "intent": "rent",
+      "intent_label": "Per month",
+      "type": "House",
+      "bedrooms": 4,
+      "bathrooms": 3,
+      "area": 240,
+      "image": "https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=1400&q=80",
+      "gallery": [
+        "https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=1600&q=80",
+        "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=1600&q=80"
+      ],
+      "agent": {
+        "id": 3,
+        "name": "Fatou Bamba",
+        "agency": "Ivoire Estates",
+        "initials": "FB",
+        "rating": 4.7,
+        "deals": 61,
+        "verified": true,
+        "since": "2023",
+        "response": "Same day",
+        "phone": "+225 07 00 00 03"
+      },
+      "tags": [
+        "Garden",
+        "Parking",
+        "Security",
+        "Air conditioning"
+      ],
+      "description": "Duplex with a private garden in a gated Riviera 4 compound. Available unfurnished from November.",
+      "lat": 5.3711,
+      "lng": -3.9403,
+      "published": "2026-10-16",
+      "views": 189,
+      "href": "/properties/riviera-terrace-duplex",
+      "verified": {
+        "agent": true,
+        "location": true,
+        "photos": true,
+        "video": true,
+        "documents": true,
+        "reviewer": "Technical review · K. Mensah",
+        "reviewed_at": "2026-10-16"
+      }
+    }
+  ],
+  "offers": [
+    {
+      "id": 101,
+      "user_id": 1,
+      "property_id": 1,
+      "amount": 51500000,
+      "discount_percent": 3,
+      "status": "pending",
+      "placed": "2 days ago",
+      "message": "Offer submitted with verified proof of funds."
+    },
+    {
+      "id": 102,
+      "user_id": 1,
+      "property_id": 2,
+      "amount": 37000000,
+      "discount_percent": 7,
+      "status": "pending",
+      "placed": "5 hours ago",
+      "message": "Interested in closing before end of month."
+    },
+    {
+      "id": 103,
+      "user_id": 1,
+      "property_id": 3,
+      "amount": 1200000,
+      "discount_percent": 10,
+      "status": "accepted",
+      "placed": "Accepted yesterday",
+      "message": "Approved twelve-month lease.",
+      "decided_at": "16 Oct 2026, 14:32",
+      "deal": {
+        "reference": "CCH-2026-0482",
+        "closed": "16 Oct 2026, 14:32",
+        "terms": "12-month lease · 2 months deposit"
+      }
+    }
+  ],
+  "conversations": [
+    {
+      "id": 1793641039423,
+      "created_by": 1,
+      "property_id": 2,
+      "agent_id": 2,
+      "status": "open",
+      "chat_state": "inquiry",
+      "unread": 0,
+      "last_message_at": "17:37",
+      "messages": [
+        {
+          "id": 1793641039424,
+          "user_id": 1,
+          "from": "me",
+          "text": "Hello Jean-Marc Diallo, I am interested in viewing Sunset Creek Villa.",
+          "at": "17:37",
+          "timestamp": 1793641039423
+        }
+      ]
+    },
+    {
+      "id": 1793641024718,
+      "created_by": 1,
+      "property_id": 5,
+      "agent_id": 2,
+      "status": "open",
+      "chat_state": "inquiry",
+      "unread": 0,
+      "last_message_at": "17:37",
+      "messages": [
+        {
+          "id": 1793641024719,
+          "user_id": 1,
+          "from": "me",
+          "text": "Hello Jean-Marc Diallo, I am interested in viewing Palm Ridge Titled Plot.",
+          "at": "17:37",
+          "timestamp": 1793641024718
+        }
+      ]
+    },
+    {
+      "id": 201,
+      "created_by": 1,
+      "property_id": 1,
+      "agent_id": 1,
+      "status": "open",
+      "chat_state": "escrow_funded",
+      "unread": 0,
+      "last_message_at": "10:13",
+      "messages": [
+        {
+          "id": 1,
+          "user_id": 2,
+          "from": "agent",
+          "text": "Good morning — the residence is still available. Would you like to see it this week?",
+          "at": "Yesterday, 09:14",
+          "timestamp": 1793347109688
+        },
+        {
+          "id": 2,
+          "user_id": 1,
+          "from": "me",
+          "text": "Yes please. Is Saturday morning possible?",
+          "at": "Yesterday, 09:21",
+          "timestamp": 1793347509688
+        },
+        {
+          "id": 3,
+          "user_id": 2,
+          "from": "agent",
+          "text": "Saturday at 10:00 works. I will bring the title documents.",
+          "at": "Yesterday, 09:24",
+          "timestamp": 1793348509688
+        },
+        {
+          "id": 1793711395236,
+          "user_id": 1,
+          "from": "me",
+          "text": "Bonjour, le bien à Cocody est-il toujours disponible et quel est le prix final ?",
+          "at": "13:09",
+          "timestamp": 1793711395235
+        },
+        {
+          "id": 1793711395397,
+          "user_id": 1,
+          "from": "agent",
+          "is_ai": true,
+          "text": "Bonjour Koffi Kouamé ! Merci pour votre intérêt pour \"Mansard View Residence\" (Cocody, Abidjan). Ce bien vérifié (280 m², 4 ch., 54 000 000 F CFA) est actuellement disponible et audité par notre équipe. Notre conseiller Aya Koffi a bien reçu votre demande et peut également vous joindre au +225 07 00 00 01. Souhaitez-vous planifier une visite sur place ?",
+          "at": "13:09",
+          "timestamp": 1793711395387
+        },
+        {
+          "id": 1793711400841,
+          "user_id": 1,
+          "from": "me",
+          "text": "Bonjour, le bien à Cocody est-il toujours disponible ?",
+          "at": "13:10",
+          "timestamp": 1793711400840
+        },
+        {
+          "id": 1793711400881,
+          "user_id": 1,
+          "from": "agent",
+          "is_ai": true,
+          "text": "Bonjour Koffi Kouamé ! Merci pour votre intérêt pour \"Mansard View Residence\" (Cocody, Abidjan). Ce bien vérifié (280 m², 4 ch., 54 000 000 F CFA) est actuellement disponible et audité par notre équipe. Notre conseiller Aya Koffi a bien reçu votre demande et peut également vous joindre au +225 07 00 00 01. Souhaitez-vous planifier une visite sur place ?",
+          "at": "13:10",
+          "timestamp": 1793711400871
+        },
+        {
+          "id": 1793711406869,
+          "user_id": 1,
+          "from": "me",
+          "text": "Bonjour, le bien à Cocody est-il toujours disponible ?",
+          "at": "13:10",
+          "timestamp": 1793711406868
+        },
+        {
+          "id": 1793711406913,
+          "user_id": 1,
+          "from": "agent",
+          "is_ai": true,
+          "text": "Bonjour Koffi Kouamé ! Merci pour votre intérêt pour \"Mansard View Residence\" (Cocody, Abidjan). Ce bien vérifié (280 m², 4 ch., 54 000 000 F CFA) est actuellement disponible et audité par notre équipe. Notre conseiller Aya Koffi a bien reçu votre demande et peut également vous joindre au +225 07 00 00 01. Souhaitez-vous planifier une visite sur place ?",
+          "at": "13:10",
+          "timestamp": 1793711406903
+        },
+        {
+          "id": 1793711413459,
+          "user_id": 1,
+          "from": "agent",
+          "text": "What are the security and parking amenities for this villa?",
+          "at": "13:10",
+          "timestamp": 1793711413459
+        },
+        {
+          "id": 1793711413506,
+          "user_id": 1,
+          "from": "agent",
+          "is_ai": true,
+          "text": "Hello Koffi Kouamé! Thank you for your inquiry regarding \"Mansard View Residence\" in Cocody, Abidjan. This verified property (280 m², 4 beds, 54 000 000 XOF) is active and inspected with full legal clearance. Our certified agent Aya Koffi has received your inquiry and can also be reached directly at +225 07 00 00 01. Would you like to schedule an on-site visit?",
+          "at": "13:10",
+          "timestamp": 1793711413496
+        },
+        {
+          "id": 1794046414044,
+          "user_id": 1,
+          "from": "agent",
+          "is_receipt": true,
+          "receipt": {
+            "receipt_number": "REC-CCH-414033",
+            "transaction_ref": "TX-ESCROW-BXR6WO",
+            "property_id": 1,
+            "property_title": "Mansard View Residence",
+            "amount_xof": 2500000,
+            "amount_formatted": "2 500 000 F CFA",
+            "currency_code": "XOF",
+            "country": "CI",
+            "country_name": "Côte d'Ivoire",
+            "payment_method": "mobile_money",
+            "operator_name": "Wave",
+            "payer_name": "Koffi Kouamé",
+            "payer_phone_or_account": "+225 07 12 34 56",
+            "paid_at": "07 nov. 2026, 10:13",
+            "status": "escrow_secured",
+            "escrow_guarantee": "Garantie Séquestre ChiChoc Habitat · Sécurité bancaire & notariée jusqu’à signature définitive"
+          },
+          "text": "✓ Acompte sécurisé de 2 500 000 F CFA validé via Wave (Côte d'Ivoire). Référence séquestre: TX-ESCROW-BXR6WO. Les fonds sont placés sous séquestre notarié garanti ChiChoc Escrow.",
+          "at": "10:13",
+          "timestamp": 1794046414044
+        }
+      ],
+      "payment_status": "paid_escrow",
+      "payment_amount": 2500000,
+      "deal": {
+        "reference": "TX-ESCROW-BXR6WO",
+        "closed": "07 nov. 2026, 10:13",
+        "terms": "Acompte séquestré de 2 500 000 F CFA via Wave",
+        "amount_due": 2500000,
+        "amount_paid": 2500000,
+        "payment_status": "paid_escrow",
+        "receipt_number": "REC-CCH-414033"
+      }
+    },
+    {
+      "id": 202,
+      "created_by": 1,
+      "property_id": 3,
+      "agent_id": 3,
+      "status": "closed",
+      "chat_state": "deal_closed",
+      "closed_reason": "Offer accepted",
+      "unread": 0,
+      "last_message_at": "16 Oct 2026, 14:32",
+      "deal": {
+        "reference": "CCH-2026-0482",
+        "closed": "16 Oct 2026, 14:32",
+        "terms": "12-month lease · 2 months deposit"
+      },
+      "messages": []
+    }
+  ],
+  "verificationQueue": [
+    {
+      "property_id": 1,
+      "submitted": "2026-09-28",
+      "status": "approved",
+      "gps_delta": 12,
+      "required_shots": 8,
+      "captured_shots": 8,
+      "documents": 3,
+      "agent_kyc": "approved",
+      "internal_note": "Everything checked and verified.",
+      "reviewer": "Admin Team",
+      "decided_at": "2026-10-31T07:58:45.064Z"
+    },
+    {
+      "property_id": 2,
+      "submitted": "2026-10-02",
+      "status": "pending",
+      "gps_delta": 34,
+      "required_shots": 8,
+      "captured_shots": 8,
+      "documents": 3,
+      "agent_kyc": "approved"
+    },
+    {
+      "property_id": 3,
+      "submitted": "2026-10-08",
+      "status": "pending",
+      "gps_delta": 8,
+      "required_shots": 8,
+      "captured_shots": 8,
+      "documents": 3,
+      "agent_kyc": "approved"
+    },
+    {
+      "property_id": 4,
+      "submitted": "2026-09-19",
+      "status": "pending",
+      "gps_delta": 61,
+      "required_shots": 8,
+      "captured_shots": 8,
+      "documents": 3,
+      "agent_kyc": "approved"
+    },
+    {
+      "property_id": 5,
+      "submitted": "2026-10-11",
+      "status": "approved",
+      "gps_delta": 19,
+      "required_shots": 8,
+      "captured_shots": 8,
+      "documents": 3,
+      "agent_kyc": "approved"
+    },
+    {
+      "property_id": 6,
+      "submitted": "2026-10-14",
+      "status": "approved",
+      "gps_delta": 4,
+      "required_shots": 8,
+      "captured_shots": 6,
+      "documents": 2,
+      "agent_kyc": "pending"
+    },
+    {
+      "property_id": 7,
+      "submitted": "2026-09-08",
+      "status": "approved",
+      "gps_delta": 27,
+      "required_shots": 8,
+      "captured_shots": 8,
+      "documents": 3,
+      "agent_kyc": "approved"
+    },
+    {
+      "property_id": 8,
+      "submitted": "2026-10-05",
+      "status": "approved",
+      "gps_delta": 44,
+      "required_shots": 8,
+      "captured_shots": 8,
+      "documents": 3,
+      "agent_kyc": "approved"
+    },
+    {
+      "property_id": 9,
+      "submitted": "2026-10-16",
+      "status": "approved",
+      "gps_delta": 9,
+      "required_shots": 8,
+      "captured_shots": 8,
+      "documents": 3,
+      "agent_kyc": "approved"
+    }
+  ],
+  "currencies": {
+    "XOF": {
+      "code": "XOF",
+      "name": "West African CFA franc",
+      "symbol": "F CFA",
+      "decimals": 0,
+      "rate": 1
+    },
+    "USD": {
+      "code": "USD",
+      "name": "US Dollar",
+      "symbol": "$",
+      "decimals": 2,
+      "rate": 0.001701
+    },
+    "EUR": {
+      "code": "EUR",
+      "name": "Euro",
+      "symbol": "€",
+      "decimals": 2,
+      "rate": 0.001524
+    },
+    "NGN": {
+      "code": "NGN",
+      "name": "Nigerian Naira",
+      "symbol": "₦",
+      "decimals": 0,
+      "rate": 2.267694
+    },
+    "GHS": {
+      "code": "GHS",
+      "name": "Ghanaian Cedi",
+      "symbol": "₵",
+      "decimals": 2,
+      "rate": 0.019942
+    }
+  },
+  "kycApplications": [],
+  "propertyRequests": [
+    {
+      "id": 304,
+      "user_id": 1,
+      "user_name": "Test User",
+      "user_phone": "+225 01020304",
+      "user_email": "kouame@example.com",
+      "intent": "sale",
+      "type": "Apartment",
+      "city": "Abidjan",
+      "district": "Plateau",
+      "budget_min": 25000000,
+      "budget_max": 50000000,
+      "currency": "XOF",
+      "lat": 5.32,
+      "lng": -4.01,
+      "bedrooms_min": 2,
+      "bathrooms_min": 2,
+      "surface_min": 150,
+      "facilities": [
+        "Ascenseur",
+        "Groupe électrogène"
+      ],
+      "notes": "Test request verification",
+      "status": "open",
+      "created_at": "2026-11-04T12:30:36.625Z"
+    },
+    {
+      "id": 301,
+      "user_id": 1,
+      "user_name": "Koffi Kouamé",
+      "user_phone": "+225 07 12 34 56",
+      "user_email": "kouame@example.com",
+      "intent": "sale",
+      "type": "House",
+      "city": "Abidjan",
+      "district": "Cocody Riviera Golf",
+      "budget_min": 40000000,
+      "budget_max": 75000000,
+      "currency": "XOF",
+      "lat": 5.3482,
+      "lng": -3.9781,
+      "bedrooms_min": 4,
+      "bathrooms_min": 3,
+      "surface_min": 220,
+      "facilities": [
+        "Piscine",
+        "Sécurité 24/7",
+        "Groupe électrogène",
+        "Accès goudronné"
+      ],
+      "notes": "Recherche villa familiale sécurisée avec ACD ou TF en règle. Prêt bancaire pré-approuvé.",
+      "status": "claimed",
+      "claimed_by_agent_id": 2,
+      "claimed_by_agent_name": "Aya Koffi",
+      "claimed_at": "2026-10-18T10:30:00Z",
+      "agent_response": "Nous avons identifié la Villa Mansardée aux Deux-Plateaux et préparé le dossier ACD.",
+      "recommended_property_id": 1,
+      "created_at": "2026-10-17T14:22:00Z"
+    },
+    {
+      "id": 302,
+      "user_id": 1,
+      "user_name": "Koffi Kouamé",
+      "user_phone": "+225 07 12 34 56",
+      "user_email": "kouame@example.com",
+      "intent": "rent",
+      "type": "Shop",
+      "city": "Abidjan",
+      "district": "Marcory Zone 4",
+      "budget_min": 500000,
+      "budget_max": 1500000,
+      "currency": "XOF",
+      "lat": 5.2912,
+      "lng": -3.9854,
+      "surface_min": 80,
+      "facilities": [
+        "Climatisation",
+        "Accès goudronné",
+        "Parking clients",
+        "Sécurité 24/7"
+      ],
+      "notes": "Local commercial vitrine passante pour boutique de prêt-à-porter de standing.",
+      "status": "open",
+      "created_at": "2026-10-19T09:15:00Z"
+    },
+    {
+      "id": 303,
+      "user_id": 1,
+      "user_name": "Mme Bamba Touré",
+      "user_phone": "+225 05 44 22 11",
+      "user_email": "bamba.toure@ivoire-business.ci",
+      "intent": "sale",
+      "type": "Land",
+      "city": "Bingerville",
+      "district": "Bingerville Nouveau Quartier",
+      "budget_min": 20000000,
+      "budget_max": 45000000,
+      "currency": "XOF",
+      "lat": 5.3585,
+      "lng": -3.8962,
+      "surface_min": 500,
+      "facilities": [
+        "Accès goudronné",
+        "Eau & Électricité SODECI/CIE",
+        "Titre Foncier / ACD"
+      ],
+      "notes": "Terrain plat constructible immédiatement avec arrêté de concession définitive (ACD) pour projet résidentiel.",
+      "status": "open",
+      "created_at": "2026-10-20T11:40:00Z"
+    }
+  ]
+}

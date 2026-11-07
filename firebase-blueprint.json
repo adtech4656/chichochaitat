@@ -1,0 +1,41 @@
+{
+  "entities": {
+    "users": {
+      "fields": {
+        "name": { "type": "string" },
+        "email": { "type": "string" },
+        "role": { "type": "string" },
+        "phone": { "type": "string" },
+        "createdAt": { "type": "timestamp" }
+      }
+    },
+    "properties": {
+      "fields": {
+        "title": { "type": "string" },
+        "price": { "type": "number" },
+        "city": { "type": "string" },
+        "status": { "type": "string" },
+        "verified": { "type": "boolean" },
+        "createdAt": { "type": "timestamp" }
+      }
+    },
+    "offers": {
+      "fields": {
+        "userId": { "type": "string" },
+        "propertyId": { "type": "number" },
+        "amount": { "type": "number" },
+        "status": { "type": "string" },
+        "createdAt": { "type": "timestamp" }
+      }
+    },
+    "conversations": {
+      "fields": {
+        "userId": { "type": "string" },
+        "propertyId": { "type": "number" },
+        "status": { "type": "string" },
+        "lastMessage": { "type": "string" },
+        "updatedAt": { "type": "timestamp" }
+      }
+    }
+  }
+}
