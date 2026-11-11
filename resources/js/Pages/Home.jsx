@@ -22,6 +22,7 @@ import {
     ShieldCheckIcon,
 } from '../Components/Icons';
 import { cn } from '../lib/utils';
+import { animateHeroReveal } from '../lib/gsap-effects';
 
 const HERO_IMAGE =
     'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=2400&q=80';
@@ -81,7 +82,18 @@ export default function Home({ properties = [], content = {}, filters = {}, cate
     const finishIntro = () => {
         window.sessionStorage.setItem('cch:entered', '1');
         setPreloading(false);
+        requestAnimationFrame(() => {
+            const hero = document.getElementById('hero-section');
+            if (hero) animateHeroReveal(hero);
+        });
     };
+
+    useEffect(() => {
+        if (!preloading) {
+            const hero = document.getElementById('hero-section');
+            if (hero) animateHeroReveal(hero);
+        }
+    }, [preloading]);
 
     const hasActiveSearch = Boolean(
         searchFilters.location || searchFilters.type || searchFilters.budget,
@@ -152,7 +164,7 @@ export default function Home({ properties = [], content = {}, filters = {}, cate
 
             <motion.div variants={page} initial="initial" animate="animate" id="top" className="pb-24 lg:pb-0">
                 {/* ============================ HERO ============================ */}
-                <section className="relative isolate overflow-hidden">
+                <section id="hero-section" className="relative isolate overflow-hidden">
                     <div className="absolute inset-0 -z-10 overflow-hidden">
                         <div
                             className="absolute inset-0 animate-hero-drift bg-cover bg-center will-change-transform"

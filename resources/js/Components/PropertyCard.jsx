@@ -17,48 +17,50 @@ import GpsVerifiedBadge from './GpsVerifiedBadge';
  * Glass surface, lazy-loaded imagery with a shimmer hand-off, and a spring
  * hover lift (scale 1.02) shared by every interactive surface in the product.
  */
+import { isPropertyFavorite, toggleStoredFavorite } from '../lib/favorites-storage';
+
 export default function PropertyCard({ property, priority = false, onSave }) {
     const { format } = useMoney();
-    const { t } = useTranslation();
+    const { t, locale } = useTranslation();
     const { openAuth } = useAuthModal();
     const { auth } = usePage().props;
     const user = auth?.user;
     const { isInCompare, toggleCompare } = useCompare();
 
     const [imageLoaded, setImageLoaded] = useState(false);
-    const [saved, setSaved] = useState(Boolean(property.saved));
+    const [saved, setSaved] = useState(() => isPropertyFavorite(property?.id) || Boolean(property?.saved));
 
     const inCompare = isInCompare(property.id);
 
     useEffect(() => {
-        setSaved(Boolean(property.saved));
-    }, [property.saved]);
+        setSaved(isPropertyFavorite(property?.id) || Boolean(property?.saved));
+    }, [property.id, property.saved]);
+
+    useEffect(() => {
+        const handler = (e) => {
+            if (e.detail?.id === Number(property.id)) {
+                setSaved(Boolean(e.detail.isFavorite));
+            } else if (e.detail?.favorites) {
+                setSaved(e.detail.favorites.includes(Number(property.id)));
+            }
+        };
+        window.addEventListener('chichoc:favorites-change', handler);
+        return () => window.removeEventListener('chichoc:favorites-change', handler);
+    }, [property.id]);
 
     const toggleSave = (event) => {
         event.preventDefault();
         event.stopPropagation();
 
-        if (!user) {
-            openAuth('signin', t('auth.promptSave'));
-            return;
-        }
-
-        const nextState = !saved;
-        setSaved(nextState);
-        onSave?.(property, nextState);
-        router.post(`/properties/${property.id}/save`, {}, { preserveScroll: true, preserveState: true });
+        const result = toggleStoredFavorite(property.id);
+        setSaved(result.isFavorite);
+        onSave?.(property, result.isFavorite);
     };
 
     const handleCompare = (event) => {
         event.preventDefault();
         event.stopPropagation();
-
-        if (!user) {
-            openAuth('signin', t('auth.promptCompare'));
-            return;
-        }
-
-        toggleCompare(property);
+        toggleCompare(property, true);
     };
 
     return (
@@ -171,24 +173,24 @@ export default function PropertyCard({ property, priority = false, onSave }) {
                             <span className="text-sm">⚖️</span>
                         </motion.button>
 
-                        {/* Save / Wishlist button */}
+                        {/* Save / Favorite toggle button (locally persisted) */}
                         <motion.button
                             type="button"
                             onClick={toggleSave}
-                            whileHover={{ scale: 1.08 }}
-                            whileTap={{ scale: 0.92 }}
+                            whileHover={{ scale: 1.12 }}
+                            whileTap={{ scale: 0.88 }}
                             transition={spring}
-                            aria-label={saved ? t('prop.unsave') : t('prop.save')}
+                            aria-label={saved ? t('prop.unsave', 'Retirer des favoris') : t('prop.save', 'Ajouter aux favoris')}
                             aria-pressed={saved}
-                            title={saved ? t('prop.unsave') : t('prop.save')}
+                            title={saved ? (locale === 'fr' ? 'Retirer des favoris (Sauvegardé localement)' : 'Remove from favorites (Saved locally)') : (locale === 'fr' ? 'Ajouter aux favoris (Sauvegarde locale)' : 'Save as favorite (Local storage)')}
                             className={cn(
-                                'grid h-9 w-9 place-items-center rounded-full bg-void/60 backdrop-blur-md ring-1 transition-colors cursor-pointer',
+                                'grid h-9 w-9 place-items-center rounded-full backdrop-blur-md ring-1 transition-all cursor-pointer shadow-md',
                                 saved
-                                    ? 'text-rose-400 ring-rose-500/50 bg-rose-950/40'
-                                    : 'text-heading/80 ring-white/15 hover:text-heading hover:bg-void/80',
+                                    ? 'text-rose-400 ring-rose-500/70 bg-rose-950/70 shadow-[0_0_16px_rgba(244,63,94,0.45)]'
+                                    : 'bg-void/65 text-white/80 ring-white/20 hover:text-rose-300 hover:ring-rose-400/50 hover:bg-void/90',
                             )}
                         >
-                            <HeartIcon filled={saved} className="h-[1.05rem] w-[1.05rem]" />
+                            <HeartIcon filled={saved} className={cn('h-4.5 w-4.5 transition-transform duration-200', saved && 'scale-110')} />
                         </motion.button>
                     </div>
 

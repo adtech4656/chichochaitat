@@ -27,8 +27,9 @@ import {
 import { page, spring, staggerParent } from '../lib/motion';
 import { cn } from '../lib/utils';
 import { useMoney } from '../lib/money';
-import { useTranslation, useTypeLabel } from '../lib/i18n';
+import { useTranslation, useTypeLabel, useAmenityLabel } from '../lib/i18n';
 import { getStoredUser } from '../lib/auth-storage';
+import { isPropertyFavorite, toggleStoredFavorite } from '../lib/favorites-storage';
 
 const VERIFICATION_ROWS = [
     { key: 'agent', icon: ShieldCheckIcon },
@@ -55,9 +56,10 @@ export default function PropertyShow({ property, similar = [] }) {
     const { isInCompare, toggleCompare } = useCompare();
 
     const typeLabel = useTypeLabel();
+    const amenityLabel = useAmenityLabel();
     const dateLocale = locale === 'fr' ? 'fr-FR' : 'en-GB';
     const [activeImage, setActiveImage] = useState(0);
-    const [saved, setSaved] = useState(Boolean(property.saved));
+    const [saved, setSaved] = useState(() => isPropertyFavorite(property?.id) || Boolean(property?.saved));
     const [priceDropActive, setPriceDropActive] = useState(Boolean(property.price_drop_subscribed));
     const [offerOpen, setOfferOpen] = useState(false);
     const [appointmentOpen, setAppointmentOpen] = useState(false);
@@ -66,20 +68,28 @@ export default function PropertyShow({ property, similar = [] }) {
     const inCompare = isInCompare(property.id);
 
     useEffect(() => {
-        setSaved(Boolean(property.saved));
-    }, [property.saved]);
+        setSaved(isPropertyFavorite(property?.id) || Boolean(property?.saved));
+    }, [property.id, property.saved]);
+
+    useEffect(() => {
+        const handler = (e) => {
+            if (e.detail?.id === Number(property.id)) {
+                setSaved(Boolean(e.detail.isFavorite));
+            } else if (e.detail?.favorites) {
+                setSaved(e.detail.favorites.includes(Number(property.id)));
+            }
+        };
+        window.addEventListener('chichoc:favorites-change', handler);
+        return () => window.removeEventListener('chichoc:favorites-change', handler);
+    }, [property.id]);
 
     useEffect(() => {
         setPriceDropActive(Boolean(property.price_drop_subscribed));
     }, [property.price_drop_subscribed]);
 
     const toggleSave = () => {
-        if (!user) {
-            openAuth('signin', t('auth.promptSave'));
-            return;
-        }
-        setSaved((current) => !current);
-        router.post(`/properties/${property.id}/save`, {}, { preserveScroll: true, preserveState: true });
+        const result = toggleStoredFavorite(property.id);
+        setSaved(result.isFavorite);
     };
 
     const handleCompare = () => {
@@ -411,7 +421,7 @@ export default function PropertyShow({ property, similar = [] }) {
                                         key={tag}
                                         className="flex items-center justify-between rounded-[0.8rem] bg-white/[0.04] px-3.5 py-2.5 ring-1 ring-white/8"
                                     >
-                                        <span className="text-[0.8125rem] text-body/85">{tag}</span>
+                                        <span className="text-[0.8125rem] text-body/85">{amenityLabel(tag)}</span>
                                         <span className="grid h-5 w-5 place-items-center rounded-full bg-neon/15 text-neon">
                                             <CheckIcon className="h-3 w-3" />
                                         </span>
@@ -580,7 +590,7 @@ export default function PropertyShow({ property, similar = [] }) {
                                             image: property.image,
                                             location: property.location,
                                             district: property.district,
-                                            href: `/properties/${property.id}`,
+                                            href: property.href || `/properties/${property.slug || property.id}`,
                                             primary: true,
                                             label: property.district,
                                         },

@@ -1,4 +1,5 @@
 import { cn } from '../lib/utils';
+import { useSiteConfig } from '../lib/site-config-context';
 
 export const LOGO_DARK = '/assets/aistudio/Chic_Choc_Habitat_Logo__2__5ee6ccc6.png';
 export const LOGO_LIGHT = '/assets/aistudio/Chic_Choc_Habitat_Logo__1__7632cf5c.png';
@@ -25,16 +26,17 @@ export function LogoMark({ className = 'h-9 w-9', glow = false, alt = 'Chic Choc
  * Complete Wordmark with official brand badge and typography.
  */
 export function Wordmark({ className, markClassName = 'h-9 w-9', showTrustBadges = false }) {
+    const { site } = useSiteConfig();
     return (
         <span className={cn('inline-flex items-center gap-2.5', className)}>
             <LogoMark className={markClassName} />
             <span className="flex flex-col text-left">
                 <span className="font-display text-[1rem] font-bold tracking-tight text-heading leading-tight">
-                    CHIC CHOC <span className="text-neon">HABITAT</span>
+                    {site?.logoText || 'CHIC CHOC'} <span className="text-neon">{site?.logoHighlight || 'HABITAT'}</span>
                 </span>
                 {showTrustBadges && (
                     <span className="text-[0.625rem] text-neon/80 font-medium tracking-wider uppercase">
-                        Fiable · Sécurisé · Garantie
+                        {site?.logoBadge || 'Fiable · Sécurisé · Garantie'}
                     </span>
                 )}
             </span>

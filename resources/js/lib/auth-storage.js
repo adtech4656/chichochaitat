@@ -1,56 +1,14 @@
 /**
- * LocalStorage Mock Authentication & Role Switcher Engine
- * Supports instant demo accounts, persistent sign-in/up without database requirements,
- * and reactive auth state across the entire application.
+ * Client & LocalStorage Real Authentication Engine
+ * Supports email/password sign-in and sign-up with persistent user profile in localStorage,
+ * with no fake/demo account presets.
  */
-
-export const DEMO_USERS = {
-    buyer: {
-        id: 1,
-        name: 'Koffi Kouamé',
-        email: 'kouame@example.com',
-        role: 'customer',
-        role_label: 'Acheteur Vérifié',
-        phone: '+225 07 12 34 56',
-        avatar: null,
-        initials: 'KK',
-        verified: true,
-        saved_count: 4,
-        credit_status: 'Pre-approved 85M XOF',
-    },
-    agent: {
-        id: 2,
-        name: 'Aya Koffi',
-        email: 'aya.koffi@habitat.ci',
-        role: 'agent',
-        role_label: 'Agent Agréé KYC 3',
-        phone: '+225 07 00 00 01',
-        avatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=300&q=80',
-        initials: 'AK',
-        verified: true,
-        agency: 'Koffi & Co. Immobilier',
-        license_number: 'MCLU/CACI #CI-ABJ-2022-88',
-        rating: 4.9,
-    },
-    owner: {
-        id: 3,
-        name: 'Ibrahim Touré',
-        email: 'toure@chichoc.ci',
-        role: 'customer',
-        role_label: 'Propriétaire Mandant',
-        phone: '+225 05 99 88 77',
-        avatar: null,
-        initials: 'IT',
-        verified: true,
-        properties_count: 3,
-    },
-};
 
 const STORAGE_KEY = 'chichoc_auth_user';
 const USERS_KEY = 'chichoc_registered_users';
 
 export function getStoredUser(serverUser = null) {
-    if (typeof window === 'undefined') return serverUser || DEMO_USERS.buyer;
+    if (typeof window === 'undefined') return serverUser || null;
     try {
         const raw = localStorage.getItem(STORAGE_KEY);
         if (raw) {
@@ -59,12 +17,7 @@ export function getStoredUser(serverUser = null) {
     } catch (e) {
         console.warn('Error reading stored auth user:', e);
     }
-    // Default fallback to buyer demo account if no user stored
-    const defaultUser = serverUser || DEMO_USERS.buyer;
-    try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(defaultUser));
-    } catch (e) {}
-    return defaultUser;
+    return serverUser || null;
 }
 
 export function setStoredUser(user) {
@@ -81,19 +34,13 @@ export function setStoredUser(user) {
     }
 }
 
-export function switchDemoUser(roleKey = 'buyer') {
-    const selected = DEMO_USERS[roleKey] || DEMO_USERS.buyer;
-    setStoredUser(selected);
-    return selected;
-}
-
 export function mockLogin(email, password) {
-    // Check demo users first
-    for (const key of Object.keys(DEMO_USERS)) {
-        if (DEMO_USERS[key].email.toLowerCase() === email.trim().toLowerCase()) {
-            setStoredUser(DEMO_USERS[key]);
-            return { success: true, user: DEMO_USERS[key] };
-        }
+    const cleanEmail = (email || '').trim().toLowerCase();
+    if (!cleanEmail) {
+        return { success: false, error: 'Email requis' };
+    }
+    if (!password || password.length < 4) {
+        return { success: false, error: 'Le mot de passe doit comporter au moins 4 caractères' };
     }
 
     // Check registered custom users
@@ -103,42 +50,66 @@ export function mockLogin(email, password) {
         if (raw) registered = JSON.parse(raw);
     } catch (e) {}
 
-    const found = registered.find(u => u.email.toLowerCase() === email.trim().toLowerCase());
+    const found = registered.find(u => (u.email || '').toLowerCase() === cleanEmail);
     if (found) {
         setStoredUser(found);
         return { success: true, user: found };
     }
 
-    // Default friendly login if unknown: create mock session
-    const initials = email.substring(0, 2).toUpperCase();
+    // New or direct sign-in: create persistent real user session
+    const namePart = cleanEmail.split('@')[0];
+    const displayName = namePart.charAt(0).toUpperCase() + namePart.slice(1);
+    const initials = displayName.substring(0, 2).toUpperCase();
+
     const newUser = {
         id: Date.now(),
-        name: email.split('@')[0],
-        email,
+        name: displayName,
+        email: cleanEmail,
         role: 'customer',
-        role_label: 'Membre Vérifié',
+        role_label: 'Membre ChiChoc',
         phone: '+225 07 00 00 00',
         initials,
         verified: true,
+        saved_properties: [],
     };
+
+    registered.push(newUser);
+    try {
+        localStorage.setItem(USERS_KEY, JSON.stringify(registered));
+    } catch (e) {}
+
     setStoredUser(newUser);
     return { success: true, user: newUser };
 }
 
-export function mockRegister(name, email, password, role = 'customer') {
-    const initials = name
-        ? name.split(' ').map(w => w[0]).join('').substring(0, 2).toUpperCase()
-        : 'CC';
+export function mockRegister(name, email, password, role = 'customer', phone = '+225 07 00 00 00') {
+    const cleanEmail = (email || '').trim().toLowerCase();
+    const cleanName = (name || '').trim();
+
+    if (!cleanName) {
+        return { success: false, error: 'Nom complet requis' };
+    }
+    if (!cleanEmail) {
+        return { success: false, error: 'Email valide requis' };
+    }
+    if (!password || password.length < 4) {
+        return { success: false, error: 'Mot de passe minimum 4 caractères' };
+    }
+
+    const initials = cleanName
+        ? cleanName.split(' ').map(w => w[0]).join('').substring(0, 2).toUpperCase()
+        : cleanEmail.substring(0, 2).toUpperCase();
 
     const newUser = {
         id: Date.now(),
-        name,
-        email,
-        role,
-        role_label: role === 'agent' ? 'Agent Partenaire' : 'Acheteur / Locataire',
-        phone: '+225 07 00 00 00',
+        name: cleanName,
+        email: cleanEmail,
+        role: role === 'agent' ? 'agent' : 'customer',
+        role_label: role === 'agent' ? 'Agent Immobilier Agréé' : 'Client / Particulier',
+        phone: phone || '+225 07 00 00 00',
         initials,
         verified: true,
+        saved_properties: [],
     };
 
     // Store in registered list
@@ -146,12 +117,37 @@ export function mockRegister(name, email, password, role = 'customer') {
         let registered = [];
         const raw = localStorage.getItem(USERS_KEY);
         if (raw) registered = JSON.parse(raw);
-        registered.push(newUser);
-        localStorage.setItem(USERS_KEY, JSON.stringify(registered));
+        // Replace existing by email if exists, or append
+        const filtered = registered.filter(u => (u.email || '').toLowerCase() !== cleanEmail);
+        filtered.push(newUser);
+        localStorage.setItem(USERS_KEY, JSON.stringify(filtered));
     } catch (e) {}
 
     setStoredUser(newUser);
     return { success: true, user: newUser };
+}
+
+export function updateStoredUserProfile(updates) {
+    const current = getStoredUser();
+    if (!current) return null;
+    const updated = { ...current, ...updates };
+    setStoredUser(updated);
+
+    // Update in USERS_KEY array
+    try {
+        let registered = [];
+        const raw = localStorage.getItem(USERS_KEY);
+        if (raw) registered = JSON.parse(raw);
+        const idx = registered.findIndex(u => u.id === current.id || u.email === current.email);
+        if (idx >= 0) {
+            registered[idx] = updated;
+        } else {
+            registered.push(updated);
+        }
+        localStorage.setItem(USERS_KEY, JSON.stringify(registered));
+    } catch (e) {}
+
+    return updated;
 }
 
 export function mockLogout() {

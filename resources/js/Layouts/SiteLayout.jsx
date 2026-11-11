@@ -7,7 +7,9 @@ import LanguageSwitcher from '../Components/LanguageSwitcher';
 import CurrencySwitcher from '../Components/CurrencySwitcher';
 import { AuthModalProvider, useAuthModal } from '../lib/auth-modal';
 import { CompareProvider, useCompare } from '../lib/compare';
+import { SiteConfigProvider, useSiteConfig } from '../lib/site-config-context';
 import CompareFloatingBar from '../Components/CompareFloatingBar';
+import CompareDrawer from '../Components/CompareDrawer';
 import { useTranslation } from '../lib/i18n';
 import { spring } from '../lib/motion';
 import { cn } from '../lib/utils';
@@ -26,7 +28,8 @@ import {
     WhatsAppIcon,
     MailIcon,
 } from '../Components/Icons';
-import { getStoredUser, switchDemoUser, mockLogout } from '../lib/auth-storage';
+import { getStoredUser, mockLogout } from '../lib/auth-storage';
+import { getFavoritesCount } from '../lib/favorites-storage';
 
 const NAV = [
     { key: 'nav.buy', label_fr: 'Acheter', label_en: 'Buy', href: '/properties?intent=sale', icon: '🏷️', desc_fr: 'Villas & appartements avec ACD / TF' },
@@ -38,9 +41,10 @@ const NAV = [
 
 function FloatingNav() {
     const { openAuth } = useAuthModal();
-    const { count: compareCount } = useCompare();
+    const { count: compareCount, openCompareDrawer } = useCompare();
     const { t, locale } = useTranslation();
     const { auth, url } = usePage().props;
+    const { site } = useSiteConfig();
     const serverUser = auth?.user ?? null;
 
     const [currentUser, setCurrentUser] = useState(() => getStoredUser(serverUser));
@@ -76,13 +80,21 @@ function FloatingNav() {
     }, [sidebarOpen]);
 
     const user = currentUser;
-    const savedCount = (user?.saved_properties?.length ?? auth?.guest_saved_properties?.length) ?? (user?.saved_count || 0);
+    const [localFavCount, setLocalFavCount] = useState(() => getFavoritesCount());
 
-    const handleSwitchRole = (roleKey) => {
-        const switched = switchDemoUser(roleKey);
-        setCurrentUser(switched);
-        setSidebarOpen(false);
-    };
+    useEffect(() => {
+        const handler = (e) => {
+            if (e.detail?.count !== undefined) {
+                setLocalFavCount(e.detail.count);
+            } else {
+                setLocalFavCount(getFavoritesCount());
+            }
+        };
+        window.addEventListener('chichoc:favorites-change', handler);
+        return () => window.removeEventListener('chichoc:favorites-change', handler);
+    }, []);
+
+    const savedCount = localFavCount > 0 ? localFavCount : ((user?.saved_properties?.length ?? auth?.guest_saved_properties?.length) ?? (user?.saved_count || 0));
 
     const handleLogout = () => {
         mockLogout();
@@ -108,29 +120,28 @@ function FloatingNav() {
                     )}
                 >
                     <div className="flex items-center justify-between px-3.5 py-2 sm:px-6 sm:py-2.5">
-                        {/* Logo */}
-                        <Link href="/" className="flex items-center gap-2.5 group shrink-0">
+                        {/* Logo Only (Name removed per user request) */}
+                        <Link
+                            href="/"
+                            className="flex items-center group shrink-0"
+                            aria-label="Chic Choc Habitat"
+                            title="Chic Choc Habitat"
+                        >
                             <LogoMark className="h-8 w-8 sm:h-9 sm:w-9 ring-1 ring-white/10 group-hover:scale-105 transition-transform" />
-                            <div className="flex flex-col text-left">
-                                <span className="font-display text-[0.875rem] sm:text-[0.9375rem] font-extrabold tracking-tight text-heading leading-tight">
-                                    CHIC CHOC <span className="text-neon">HABITAT</span>
-                                </span>
-                                <span className="hidden sm:inline text-[0.5625rem] font-semibold text-emerald-300 uppercase tracking-wider">
-                                    Portail Agréé & Tiers de Confiance
-                                </span>
-                            </div>
                         </Link>
 
-                        {/* Top Bar Quick Controls */}
+                        {/* Top Bar Quick Controls: On mobile, ONLY the Menu icon is shown */}
                         <div className="flex items-center gap-1.5 sm:gap-2.5">
-                            {/* Live FX & Language Switchers */}
-                            <LanguageSwitcher locale={locale} compact />
-                            <CurrencySwitcher />
+                            {/* Live FX & Language Switchers — hidden on mobile */}
+                            <div className="hidden sm:flex items-center gap-1.5">
+                                <LanguageSwitcher locale={locale} compact />
+                                <CurrencySwitcher />
+                            </div>
 
-                            {/* Wishlist Link */}
+                            {/* Wishlist Link — hidden on mobile */}
                             <Link
                                 href="/wishlist"
-                                className="relative flex items-center justify-center h-8 w-8 sm:h-9 sm:w-9 rounded-xl bg-white/[0.05] ring-1 ring-white/10 hover:bg-white/[0.1] text-rose-300 transition-colors shrink-0"
+                                className="hidden sm:flex relative items-center justify-center h-8 w-8 sm:h-9 sm:w-9 rounded-xl bg-white/[0.05] ring-1 ring-white/10 hover:bg-white/[0.1] text-rose-300 transition-colors shrink-0"
                                 title="Wishlist (Coups de Cœur)"
                             >
                                 <HeartIcon filled={savedCount > 0} className="h-4 w-4" />
@@ -141,11 +152,12 @@ function FloatingNav() {
                                 )}
                             </Link>
 
-                            {/* Compare Link */}
-                            <Link
-                                href="/compare"
-                                className="relative flex items-center justify-center h-8 w-8 sm:h-9 sm:w-9 rounded-xl bg-white/[0.05] ring-1 ring-white/10 hover:bg-white/[0.1] text-emerald-300 transition-colors shrink-0"
-                                title="Comparateur de Biens"
+                            {/* Compare Trigger — hidden on mobile */}
+                            <button
+                                type="button"
+                                onClick={openCompareDrawer}
+                                className="hidden sm:flex relative items-center justify-center h-8 w-8 sm:h-9 sm:w-9 rounded-xl bg-white/[0.05] ring-1 ring-white/10 hover:bg-white/[0.1] text-emerald-300 transition-colors shrink-0 cursor-pointer"
+                                title="Comparateur de Biens (Ouvrir le tiroir)"
                             >
                                 <span className="text-xs sm:text-sm">⚖️</span>
                                 {compareCount > 0 && (
@@ -153,7 +165,7 @@ function FloatingNav() {
                                         {compareCount}
                                     </span>
                                 )}
-                            </Link>
+                            </button>
 
                             {/* User Avatar / Login */}
                             {user ? (
@@ -183,7 +195,7 @@ function FloatingNav() {
                                 type="button"
                                 onClick={() => setSidebarOpen(true)}
                                 aria-label="Open Navigation Sidebar"
-                                className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-emerald-500/20 to-teal-500/20 border border-emerald-500/40 px-3 py-1.5 text-xs font-bold text-emerald-200 hover:bg-emerald-500/30 hover:border-emerald-400/60 shadow-[0_0_15px_rgba(16,185,129,0.2)] transition-all cursor-pointer shrink-0"
+                                className="flex w-[71px] items-center justify-center gap-1.5 rounded-xl bg-gradient-to-r from-emerald-500/20 to-teal-500/20 border border-emerald-500/40 py-1.5 text-xs font-bold text-emerald-200 hover:bg-emerald-500/30 hover:border-emerald-400/60 shadow-[0_0_15px_rgba(16,185,129,0.2)] transition-all cursor-pointer shrink-0"
                             >
                                 <MenuIcon className="h-4 w-4 text-neon stroke-[2.5]" />
                                 <span className="font-display tracking-wide uppercase text-[0.75rem]">Menu</span>
@@ -220,10 +232,10 @@ function FloatingNav() {
                                     <LogoMark className="h-8 w-8 ring-1 ring-white/10" />
                                     <div>
                                         <h3 className="font-display text-sm font-extrabold tracking-tight text-heading">
-                                            CHIC CHOC <span className="text-neon">HABITAT</span>
+                                            {site.logoText || 'CHIC CHOC'} <span className="text-neon">{site.logoHighlight || 'HABITAT'}</span>
                                         </h3>
                                         <p className="text-[0.625rem] text-emerald-400 font-semibold uppercase tracking-wider">
-                                            Navigation & Conciergerie
+                                            {site.logoBadge || 'Navigation & Conciergerie'}
                                         </p>
                                     </div>
                                 </div>
@@ -239,8 +251,47 @@ function FloatingNav() {
                             </div>
 
                             {/* Scrollable Navigation Body */}
-                            <div className="flex-1 overflow-y-auto p-5 space-y-6">
-                                {/* Section 1: User Account & 1-Click Role Switcher */}
+                            <div className="flex-1 overflow-y-auto p-5 space-y-5">
+                                {/* Mobile Quick Toolbar: Language, Currency, Wishlist & Compare */}
+                                <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-3 flex items-center justify-between gap-2">
+                                    <div className="flex items-center gap-1.5">
+                                        <LanguageSwitcher locale={locale} compact />
+                                        <CurrencySwitcher />
+                                    </div>
+                                    <div className="flex items-center gap-2">
+                                        <Link
+                                            href="/wishlist"
+                                            onClick={() => setSidebarOpen(false)}
+                                            className="relative flex items-center justify-center h-8 w-8 rounded-xl bg-white/[0.05] ring-1 ring-white/10 hover:bg-white/[0.1] text-rose-300 transition-colors shrink-0"
+                                            title="Wishlist (Coups de Cœur)"
+                                        >
+                                            <HeartIcon filled={savedCount > 0} className="h-4 w-4" />
+                                            {savedCount > 0 && (
+                                                <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-rose-500 text-[0.5625rem] font-bold text-white shadow font-mono">
+                                                    {savedCount}
+                                                </span>
+                                            )}
+                                        </Link>
+                                        <button
+                                            type="button"
+                                            onClick={() => {
+                                                setSidebarOpen(false);
+                                                openCompareDrawer();
+                                            }}
+                                            className="relative flex items-center justify-center h-8 w-8 rounded-xl bg-white/[0.05] ring-1 ring-white/10 hover:bg-white/[0.1] text-emerald-300 transition-colors shrink-0 cursor-pointer"
+                                            title="Comparateur de Biens"
+                                        >
+                                            <span className="text-xs">⚖️</span>
+                                            {compareCount > 0 && (
+                                                <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-emerald-500 text-[0.5625rem] font-bold text-void shadow font-mono">
+                                                    {compareCount}
+                                                </span>
+                                            )}
+                                        </button>
+                                    </div>
+                                </div>
+
+                                {/* Section 1: User Account Profile */}
                                 <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4 space-y-3">
                                     {user ? (
                                         <>
@@ -252,70 +303,21 @@ function FloatingNav() {
                                                     <div className="flex items-center gap-1.5 flex-wrap">
                                                         <p className="font-display font-bold text-heading text-sm truncate">{user.name}</p>
                                                         <span className="rounded-full bg-emerald-500/20 px-2 py-0.5 text-[0.625rem] font-bold text-emerald-300 ring-1 ring-emerald-500/30">
-                                                            {user.role_label || (user.role === 'agent' ? 'Agent Agréé' : 'Acheteur')}
+                                                            {user.role_label || (user.role === 'agent' ? 'Agent Agréé' : 'Membre')}
                                                         </span>
                                                     </div>
                                                     <p className="text-xs text-body/65 truncate mt-0.5">{user.email}</p>
                                                 </div>
                                             </div>
 
-                                            {/* 1-Click Role Switchers */}
-                                            <div className="pt-2 border-t border-white/5 space-y-1.5">
-                                                <p className="text-[0.625rem] font-bold uppercase tracking-wider text-neon flex items-center gap-1">
-                                                    <span>⚡</span>
-                                                    <span>Changer de Rôle Démo (LocalStorage)</span>
-                                                </p>
-                                                <div className="grid grid-cols-3 gap-1.5">
-                                                    <button
-                                                        type="button"
-                                                        onClick={() => handleSwitchRole('buyer')}
-                                                        className={cn(
-                                                            "rounded-xl p-2 text-left border transition-all cursor-pointer",
-                                                            user.role === 'customer' && !user.properties_count
-                                                                ? "border-neon bg-neon/15 text-neon"
-                                                                : "border-white/10 bg-white/[0.03] text-body/75 hover:border-white/20"
-                                                        )}
-                                                    >
-                                                        <p className="font-bold text-[0.6875rem] truncate">Acheteur</p>
-                                                        <p className="text-[0.5625rem] text-faint truncate">K. Kouamé</p>
-                                                    </button>
-                                                    <button
-                                                        type="button"
-                                                        onClick={() => handleSwitchRole('agent')}
-                                                        className={cn(
-                                                            "rounded-xl p-2 text-left border transition-all cursor-pointer",
-                                                            user.role === 'agent'
-                                                                ? "border-neon bg-neon/15 text-neon"
-                                                                : "border-white/10 bg-white/[0.03] text-body/75 hover:border-white/20"
-                                                        )}
-                                                    >
-                                                        <p className="font-bold text-[0.6875rem] truncate">Agent KYC</p>
-                                                        <p className="text-[0.5625rem] text-faint truncate">Aya Koffi</p>
-                                                    </button>
-                                                    <button
-                                                        type="button"
-                                                        onClick={() => handleSwitchRole('owner')}
-                                                        className={cn(
-                                                            "rounded-xl p-2 text-left border transition-all cursor-pointer",
-                                                            user.properties_count
-                                                                ? "border-neon bg-neon/15 text-neon"
-                                                                : "border-white/10 bg-white/[0.03] text-body/75 hover:border-white/20"
-                                                        )}
-                                                    >
-                                                        <p className="font-bold text-[0.6875rem] truncate">Propriétaire</p>
-                                                        <p className="text-[0.5625rem] text-faint truncate">I. Touré</p>
-                                                    </button>
-                                                </div>
-                                            </div>
-
-                                            <div className="grid grid-cols-2 gap-2 pt-2">
+                                            <div className="grid grid-cols-2 gap-2 pt-2 border-t border-white/5">
                                                 <Link
                                                     href="/account"
                                                     onClick={() => setSidebarOpen(false)}
                                                     className="flex items-center justify-center gap-1.5 rounded-xl bg-white/[0.06] p-2.5 text-xs font-semibold text-heading hover:bg-white/10 transition-colors"
                                                 >
                                                     <UserIcon className="h-3.5 w-3.5 text-neon" />
-                                                    <span>Tableau de bord</span>
+                                                    <span>Mon Profil</span>
                                                 </Link>
                                                 <button
                                                     type="button"
@@ -329,36 +331,8 @@ function FloatingNav() {
                                     ) : (
                                         <div className="space-y-3">
                                             <div>
-                                                <p className="font-display font-bold text-heading text-sm">Espace Personnel & Démo</p>
-                                                <p className="text-xs text-body/70 mt-0.5">Accédez aux fonctionnalités ou testez un profil démo :</p>
-                                            </div>
-
-                                            {/* 1-Click Demo Profiles */}
-                                            <div className="grid grid-cols-3 gap-1.5">
-                                                <button
-                                                    type="button"
-                                                    onClick={() => handleSwitchRole('buyer')}
-                                                    className="rounded-xl border border-white/10 bg-white/[0.03] p-2 text-left hover:border-neon hover:bg-neon/10 transition-all cursor-pointer"
-                                                >
-                                                    <p className="font-bold text-[0.6875rem] text-heading">Acheteur</p>
-                                                    <p className="text-[0.5625rem] text-faint truncate">Koffi Kouamé</p>
-                                                </button>
-                                                <button
-                                                    type="button"
-                                                    onClick={() => handleSwitchRole('agent')}
-                                                    className="rounded-xl border border-white/10 bg-white/[0.03] p-2 text-left hover:border-neon hover:bg-neon/10 transition-all cursor-pointer"
-                                                >
-                                                    <p className="font-bold text-[0.6875rem] text-emerald-300">Agent KYC</p>
-                                                    <p className="text-[0.5625rem] text-faint truncate">Aya Koffi</p>
-                                                </button>
-                                                <button
-                                                    type="button"
-                                                    onClick={() => handleSwitchRole('owner')}
-                                                    className="rounded-xl border border-white/10 bg-white/[0.03] p-2 text-left hover:border-neon hover:bg-neon/10 transition-all cursor-pointer"
-                                                >
-                                                    <p className="font-bold text-[0.6875rem] text-heading">Propriétaire</p>
-                                                    <p className="text-[0.5625rem] text-faint truncate">I. Touré</p>
-                                                </button>
+                                                <p className="font-display font-bold text-heading text-sm">Espace Membre ChiChoc</p>
+                                                <p className="text-xs text-body/70 mt-0.5">Connectez-vous pour retrouver vos favoris, alertes et dossiers :</p>
                                             </div>
 
                                             <div className="grid grid-cols-2 gap-2 pt-1">
@@ -551,18 +525,18 @@ function FloatingNav() {
 
                                     <div className="space-y-2 text-xs">
                                         <a
-                                            href="tel:+22507000000"
+                                            href={`tel:${(site.phone || '+22507000000').replace(/\s+/g, '')}`}
                                             className="flex items-center justify-between rounded-xl bg-white/[0.04] p-2.5 border border-white/10 hover:bg-white/10 text-heading transition-colors"
                                         >
                                             <div className="flex items-center gap-2">
                                                 <PhoneIcon className="h-4 w-4 text-emerald-400" />
                                                 <span className="font-semibold">Ligne Centrale ChiChoc</span>
                                             </div>
-                                            <span className="font-mono text-neon text-[0.6875rem] font-bold">+225 07 00 00 00</span>
+                                            <span className="font-mono text-neon text-[0.6875rem] font-bold">{site.phone || '+225 07 00 00 00'}</span>
                                         </a>
 
                                         <a
-                                            href="https://wa.me/22507000000?text=Bonjour%20Service%20Client%20ChiChoc%20Habitat,%20j'ai%20besoin%20d'une%20assistance."
+                                            href={`https://wa.me/${(site.whatsapp || '22507000000').replace(/[^0-9]/g, '')}?text=${encodeURIComponent(site.whatsappMessage || "Bonjour Service Client ChiChoc Habitat, j'ai besoin d'une assistance.")}`}
                                             target="_blank"
                                             rel="noopener noreferrer"
                                             className="flex items-center justify-between rounded-xl bg-emerald-950/60 p-2.5 border border-emerald-500/40 hover:bg-emerald-900/60 text-emerald-300 transition-colors"
@@ -576,7 +550,7 @@ function FloatingNav() {
 
                                         <div className="flex items-center gap-2 px-1 text-[0.6875rem] text-faint">
                                             <MailIcon className="h-3.5 w-3.5" />
-                                            <span>conciergerie@chichochabitat.ci</span>
+                                            <span>{site.email || 'contact@chichochabitat.ci'}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -756,33 +730,34 @@ export default function SiteLayout({ children }) {
     ];
 
     return (
-        <AuthModalProvider>
-            <CompareProvider>
-                <div className="relative flex min-h-dvh flex-col bg-void text-heading antialiased">
-                <FloatingNav />
+        <SiteConfigProvider initialConfig={site}>
+            <AuthModalProvider>
+                <CompareProvider>
+                    <div className="relative flex min-h-dvh flex-col bg-void text-heading antialiased">
+                    <FloatingNav />
 
-                <main className="flex-1 pb-24 lg:pb-0">{children}</main>
+                    <main className="flex-1 pb-24 lg:pb-0">{children}</main>
 
-                <MobileBottomNav />
+                    <MobileBottomNav />
 
-                <footer className="mt-24 border-t border-white/[0.08] mb-16 lg:mb-0">
-                    <div className="mx-auto grid max-w-7xl gap-10 px-6 py-14 sm:grid-cols-2 lg:grid-cols-5">
-                        <div className="lg:col-span-2">
-                            <div className="flex items-center gap-3">
-                                <LogoMark className="h-10 w-10 ring-1 ring-white/10" />
-                                <div className="flex flex-col text-left">
-                                    <span className="font-display text-[1rem] font-bold tracking-tight text-heading leading-tight">
-                                        CHIC CHOC <span className="text-neon">HABITAT</span>
-                                    </span>
-                                    <span className="text-[0.625rem] font-semibold text-neon/90 uppercase tracking-wider">
-                                        Fiable · Sécurisé · Garantie
-                                    </span>
+                    <footer className="mt-24 border-t border-white/[0.08] mb-16 lg:mb-0">
+                        <div className="mx-auto grid max-w-7xl gap-10 px-6 py-14 sm:grid-cols-2 lg:grid-cols-5">
+                            <div className="lg:col-span-2">
+                                <div className="flex items-center gap-3">
+                                    <LogoMark className="h-10 w-10 ring-1 ring-white/10" />
+                                    <div className="flex flex-col text-left">
+                                        <span className="font-display text-[1rem] font-bold tracking-tight text-heading leading-tight">
+                                            {site?.logoText || 'CHIC CHOC'} <span className="text-neon">{site?.logoHighlight || 'HABITAT'}</span>
+                                        </span>
+                                        <span className="text-[0.625rem] font-semibold text-neon/90 uppercase tracking-wider">
+                                            {site?.logoBadge || 'Fiable · Sécurisé · Garantie'}
+                                        </span>
+                                    </div>
                                 </div>
-                            </div>
 
-                            <p className="mt-4 max-w-xs text-[0.8125rem] leading-relaxed text-body/65">
-                                {site?.tagline}
-                            </p>
+                                <p className="mt-4 max-w-xs text-[0.8125rem] leading-relaxed text-body/65">
+                                    {site?.tagline}
+                                </p>
 
                             {site?.email && (
                                 <p className="mt-3 text-[0.75rem] text-body/55">
@@ -829,9 +804,11 @@ export default function SiteLayout({ children }) {
                 </footer>
 
                 <CompareFloatingBar />
+                <CompareDrawer />
                 <AuthHost />
             </div>
         </CompareProvider>
     </AuthModalProvider>
+    </SiteConfigProvider>
     );
 }

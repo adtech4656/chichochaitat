@@ -22,6 +22,7 @@ import { Avatar, Button, Divider, StatusPill } from './ui';
 import { useTranslation } from '../lib/i18n';
 import { useMoney } from '../lib/money';
 import { useAuthModal } from '../lib/auth-modal';
+import { useSiteConfig } from '../lib/site-config-context';
 import { cn } from '../lib/utils';
 import { spring, staggerParent, staggerChild } from '../lib/motion';
 
@@ -82,15 +83,19 @@ export default function VerifiedAgentProfile({
         return recentListings.filter((item) => item.intent === filterIntent);
     }, [recentListings, filterIntent]);
 
+    const { site } = useSiteConfig();
+
     // ChiChoc Official Intermediation Hotline and WhatsApp
-    const centralHotline = '+225 07 00 00 00';
+    const centralHotline = site?.phone || '+225 07 00 00 00';
+    const whatsappClean = (site?.whatsapp || '22507000000').replace(/[^0-9]/g, '');
+    const phoneClean = centralHotline.replace(/\s+/g, '');
     const whatsappMessage = encodeURIComponent(
         locale === 'fr'
             ? `Bonjour Conciergerie ChiChoc Habitat, je vous contacte via le profil vérifié de l'agent ${agent?.name || 'Agréé'} pour instruire un dossier ou planifier une visite officielle.`
             : `Hello ChiChoc Habitat Concierge, I am contacting you regarding verified agent ${agent?.name || 'Partner'} to inquire about listings or schedule an official tour.`
     );
-    const whatsappUrl = `https://wa.me/22507000000?text=${whatsappMessage}`;
-    const hotlineUrl = `tel:+22507000000`;
+    const whatsappUrl = `https://wa.me/${whatsappClean}?text=${whatsappMessage}`;
+    const hotlineUrl = `tel:${phoneClean}`;
 
     const handleDirectContact = (e) => {
         if (e) e.preventDefault();

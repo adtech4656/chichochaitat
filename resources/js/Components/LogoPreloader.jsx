@@ -11,17 +11,18 @@ export default function LogoPreloader({ onDone }) {
     const reduceMotion = useReducedMotion();
 
     useEffect(() => {
-        const timer = window.setTimeout(onDone, reduceMotion ? 400 : 2000);
+        const timer = window.setTimeout(onDone, reduceMotion ? 350 : 700);
 
         return () => window.clearTimeout(timer);
     }, [onDone, reduceMotion]);
 
     return (
         <motion.div
-            className="fixed inset-0 z-[120] grid place-items-center bg-void"
+            className="fixed inset-0 z-[120] grid place-items-center bg-void cursor-pointer select-none"
             initial={{ opacity: 1 }}
-            exit={{ opacity: 0, transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] } }}
-            aria-hidden="true"
+            exit={{ opacity: 0, transition: { duration: 0.35, ease: [0.22, 1, 0.36, 1] } }}
+            onClick={onDone}
+            aria-label="Skip intro animation"
         >
             {/* Ambient green aura */}
             <motion.div

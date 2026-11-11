@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { usePage } from '@inertiajs/react';
 import { useTranslation } from '../lib/i18n';
 import { useMoney } from '../lib/money';
+import { useSiteConfig } from '../lib/site-config-context';
 import { Button } from './ui';
 import { ShieldCheckIcon, CloseIcon, MapPinIcon, CheckIcon, PhoneIcon } from './Icons';
 import { spring } from '../lib/motion';
@@ -20,6 +21,7 @@ export default function AppointmentModal({
 }) {
     const { t, locale } = useTranslation();
     const { format } = useMoney();
+    const { site } = useSiteConfig();
     const { auth } = usePage().props;
     const user = auth?.user;
 
@@ -371,7 +373,7 @@ export default function AppointmentModal({
                                         <div>
                                             <span className="text-faint text-[0.625rem] uppercase block">Délégué Superviseur</span>
                                             <span className="font-bold text-heading">Délégué ChiChoc Agréé</span>
-                                            <span className="text-[0.6875rem] text-emerald-400 block">+225 07 00 00 00</span>
+                                            <span className="text-[0.6875rem] text-emerald-400 block">{site?.phone || '+225 07 00 00 00'}</span>
                                         </div>
                                     </div>
 

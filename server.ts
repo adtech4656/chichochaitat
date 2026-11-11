@@ -42,6 +42,21 @@ try {
   console.warn('Could not read lang/fr.json', e);
 }
 
+// Centralized Site Configuration (Backend editable branding, contacts, texts)
+let siteConfig: Record<string, any> = {};
+const siteConfigPath = path.resolve(__dirname, 'src/server/site-config.json');
+
+function loadSiteConfig() {
+  try {
+    if (fs.existsSync(siteConfigPath)) {
+      siteConfig = JSON.parse(fs.readFileSync(siteConfigPath, 'utf-8'));
+    }
+  } catch (e) {
+    console.warn('Could not read site-config.json, using defaults', e);
+  }
+}
+loadSiteConfig();
+
 function getFooterPages(locale: 'en' | 'fr') {
   const result: Record<string, { slug: string; title: string }[]> = {
     trust: [],
@@ -119,11 +134,26 @@ function getSharedProps(req: Request) {
     currencies,
     currency,
     site: {
-      name: 'ChiChoc-Habitat',
-      tagline: locale === 'fr' ? 'Habitat vérifié' : 'Verified living',
-      email: 'hello@chichochabitat.ci',
-      phone: '+225 07 00 00 00',
-      address: 'Cocody, Abidjan, Côte d’Ivoire',
+      ...siteConfig,
+      name: siteConfig.name || 'ChiChoc Habitat',
+      logoText: siteConfig.logoText || 'CHIC CHOC',
+      logoHighlight: siteConfig.logoHighlight || 'HABITAT',
+      logoBadge: siteConfig.logoBadge || 'Agréé MCLU & CDC-CI',
+      tagline: locale === 'fr' ? (siteConfig.tagline_fr || 'Habitat vérifié') : (siteConfig.tagline_en || 'Verified living'),
+      subtitle: locale === 'fr' ? siteConfig.subtitle_fr : siteConfig.subtitle_en,
+      phone: siteConfig.phone || '+225 07 00 00 00',
+      whatsapp: siteConfig.whatsapp || '+225 07 00 00 00',
+      whatsappMessage: locale === 'fr' ? siteConfig.whatsappMessage_fr : siteConfig.whatsappMessage_en,
+      email: siteConfig.email || 'contact@chichochabitat.ci',
+      address: siteConfig.address || 'Cocody, Abidjan, Côte d’Ivoire',
+      hours: siteConfig.hours || 'Lun - Sam: 08h00 - 18h30',
+      escrowPartner: siteConfig.escrowPartner || 'CDC-CI & Notaires Titulaires',
+      stats: siteConfig.stats || {
+        listings: '9.4k',
+        agents: '1,860',
+        approval: '98.7%',
+        response: '< 15 min',
+      },
     },
     translations: locale === 'fr' ? frTranslations : enTranslations,
     footerPages: getFooterPages(locale),
@@ -220,6 +250,11 @@ async function startServer() {
   // ==========================================
   // Public Page Routes
   // ==========================================
+
+  // Vanilla HTML/CSS/JS + GSAP Standalone App Route
+  app.get(['/vanilla', '/vanilla/'], (_req, res) => {
+    res.sendFile(path.resolve(__dirname, 'public/vanilla/index.html'));
+  });
 
   // Homepage
   app.get('/', async (req, res) => {
@@ -326,11 +361,23 @@ async function startServer() {
     });
   });
 
-  // Property details
-  app.get('/properties/:slug', async (req, res) => {
-    const { slug } = req.params;
+  // Property details (supports both slug and id, under /properties and /property)
+  app.get(['/properties/:idOrSlug', '/property/:idOrSlug'], async (req, res) => {
+    const { idOrSlug } = req.params;
     const user = (req as any).user;
-    const property = store.getPropertyBySlug(slug, user);
+    
+    // Resolve property by slug or numeric ID
+    const numId = parseInt(idOrSlug, 10);
+    let property: PropertyItem | undefined = undefined;
+    if (!isNaN(numId) && String(numId) === idOrSlug) {
+      property = store.getPropertyById(numId, user);
+    }
+    if (!property) {
+      property = store.getPropertyBySlug(idOrSlug, user);
+    }
+    if (!property && !isNaN(numId)) {
+      property = store.getPropertyById(numId, user);
+    }
 
     if (!property) {
       return res.status(404).redirect('/properties');
@@ -338,7 +385,7 @@ async function startServer() {
 
     const allPublished = store.getPublishedProperties(user);
     const similar = allPublished
-      .filter((p) => p.slug !== slug && p.type === property.type)
+      .filter((p) => p.id !== property!.id && p.type === property!.type)
       .slice(0, 3);
 
     await renderInertia(req, res, 'PropertyShow', {
@@ -721,6 +768,9 @@ async function startServer() {
       sameSite: 'lax',
       path: '/',
     });
+    if (req.headers['x-inertia']) {
+      return res.redirect(303, req.headers.referer || '/');
+    }
     if (req.headers.accept?.includes('application/json')) {
       return res.json({ success: true, locale });
     }
@@ -738,10 +788,42 @@ async function startServer() {
       sameSite: 'lax',
       path: '/',
     });
+    if (req.headers['x-inertia']) {
+      return res.redirect(303, req.headers.referer || '/');
+    }
     if (req.headers.accept?.includes('application/json')) {
       return res.json({ success: true, currency: activeCode });
     }
     res.redirect(303, req.headers.referer || '/');
+  });
+
+  // Centralized Site Configuration API (Allows backend & admin to edit logo, contacts, copy dynamically)
+  app.get('/api/site-config', (_req, res) => {
+    res.json(siteConfig);
+  });
+
+  app.post('/api/site-config', rateLimiter(30, 60000), (req, res) => {
+    try {
+      const allowedKeys = [
+        'name', 'logoText', 'logoHighlight', 'logoBadge',
+        'tagline_fr', 'tagline_en', 'subtitle_fr', 'subtitle_en',
+        'phone', 'whatsapp', 'whatsappMessage_fr', 'whatsappMessage_en',
+        'email', 'address', 'hours', 'escrowPartner', 'stats', 'social'
+      ];
+      const updates = req.body || {};
+      for (const key of allowedKeys) {
+        if (updates[key] !== undefined) {
+          (siteConfig as any)[key] = updates[key];
+        }
+      }
+      fs.writeFileSync(siteConfigPath, JSON.stringify(siteConfig, null, 2), 'utf-8');
+      if (req.headers['x-inertia']) {
+        return res.redirect(303, req.headers.referer || '/admin/verification');
+      }
+      return res.json({ success: true, site: siteConfig });
+    } catch (err: any) {
+      return res.status(500).json({ error: 'Failed to save site configuration: ' + err.message });
+    }
   });
 
   // Save / Favorite Property (Persists in user profile session or guest cookie)

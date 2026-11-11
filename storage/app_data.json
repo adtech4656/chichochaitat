@@ -912,7 +912,7 @@
       "name": "US Dollar",
       "symbol": "$",
       "decimals": 2,
-      "rate": 0.001701
+      "rate": 0.001705
     },
     "EUR": {
       "code": "EUR",
@@ -926,14 +926,14 @@
       "name": "Nigerian Naira",
       "symbol": "₦",
       "decimals": 0,
-      "rate": 2.267694
+      "rate": 2.286729
     },
     "GHS": {
       "code": "GHS",
       "name": "Ghanaian Cedi",
       "symbol": "₵",
       "decimals": 2,
-      "rate": 0.019942
+      "rate": 0.019986
     }
   },
   "kycApplications": [],

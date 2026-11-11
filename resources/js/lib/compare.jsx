@@ -6,6 +6,7 @@ const MAX_COMPARE = 4;
 const CompareContext = createContext(null);
 
 export function CompareProvider({ children }) {
+    const [drawerOpen, setDrawerOpen] = useState(false);
     const [items, setItems] = useState(() => {
         try {
             if (typeof window === 'undefined') return [];
@@ -31,36 +32,45 @@ export function CompareProvider({ children }) {
         return items.some((i) => Number(i.id) === numId);
     }, [items]);
 
-    const addToCompare = useCallback((property) => {
+    const openCompareDrawer = useCallback(() => setDrawerOpen(true), []);
+    const closeCompareDrawer = useCallback(() => setDrawerOpen(false), []);
+
+    const addToCompare = useCallback((property, openAfter = false) => {
         const numId = Number(property.id);
+        const itemData = {
+            id: numId,
+            title: property.title || 'Propriété',
+            price: property.price || 0,
+            currency: property.currency || 'XOF',
+            image: property.image || property.gallery?.[0] || '/images/hero-villa.jpg',
+            city: property.city || 'Abidjan',
+            district: property.district || '',
+            type: property.type || 'Villa',
+            intent: property.intent || 'sale',
+            bedrooms: property.bedrooms ?? property.beds ?? null,
+            bathrooms: property.bathrooms ?? property.baths ?? null,
+            area: property.area ?? null,
+            landArea: property.landArea ?? null,
+            hasAcd: Boolean(property.hasAcd || property.title_deed_type === 'ACD' || property.legal_status === 'ACD_DELIVRE'),
+            titleDeed: property.titleDeed || property.title_deed_type || 'ACD',
+            has360: Boolean(property.has360 || property.virtualTourUrl || property.has_virtual_tour),
+            isGpsVerified: Boolean(property.isGpsVerified || property.gps_status === 'verified'),
+            href: property.href || `/property/${numId}`,
+        };
+
         setItems((current) => {
             if (current.some((i) => Number(i.id) === numId)) {
                 return current;
             }
             if (current.length >= MAX_COMPARE) {
-                // Remove oldest, add new
-                return [...current.slice(1), {
-                    id: numId,
-                    title: property.title || 'Propriété',
-                    price: property.price || 0,
-                    currency: property.currency || 'XOF',
-                    image: property.image || property.gallery?.[0] || '/images/hero-villa.jpg',
-                    city: property.city || 'Abidjan',
-                    district: property.district || '',
-                    type: property.type || 'Villa',
-                }];
+                return [...current.slice(1), itemData];
             }
-            return [...current, {
-                id: numId,
-                title: property.title || 'Propriété',
-                price: property.price || 0,
-                currency: property.currency || 'XOF',
-                image: property.image || property.gallery?.[0] || '/images/hero-villa.jpg',
-                city: property.city || 'Abidjan',
-                district: property.district || '',
-                type: property.type || 'Villa',
-            }];
+            return [...current, itemData];
         });
+
+        if (openAfter) {
+            setDrawerOpen(true);
+        }
     }, []);
 
     const removeFromCompare = useCallback((id) => {
@@ -68,12 +78,12 @@ export function CompareProvider({ children }) {
         setItems((current) => current.filter((i) => Number(i.id) !== numId));
     }, []);
 
-    const toggleCompare = useCallback((property) => {
+    const toggleCompare = useCallback((property, openAfter = false) => {
         const numId = Number(property.id);
         if (isInCompare(numId)) {
             removeFromCompare(numId);
         } else {
-            addToCompare(property);
+            addToCompare(property, openAfter);
         }
     }, [isInCompare, removeFromCompare, addToCompare]);
 
@@ -92,8 +102,12 @@ export function CompareProvider({ children }) {
             clearCompare,
             maxItems: MAX_COMPARE,
             count: items.length,
+            drawerOpen,
+            openCompareDrawer,
+            closeCompareDrawer,
+            setDrawerOpen,
         }),
-        [items, compareIds, isInCompare, addToCompare, removeFromCompare, toggleCompare, clearCompare]
+        [items, compareIds, isInCompare, addToCompare, removeFromCompare, toggleCompare, clearCompare, drawerOpen, openCompareDrawer, closeCompareDrawer]
     );
 
     return <CompareContext.Provider value={value}>{children}</CompareContext.Provider>;

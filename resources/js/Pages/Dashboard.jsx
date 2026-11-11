@@ -21,8 +21,8 @@ import ReceiptCard from '../Components/ReceiptCard';
 import { page, spring, staggerParent } from '../lib/motion';
 import { useTranslation } from '../lib/i18n';
 import { cn } from '../lib/utils';
-import { useMoney } from '../lib/money';
-import { getStoredUser, DEMO_USERS } from '../lib/auth-storage';
+import { getStoredUser } from '../lib/auth-storage';
+import { isPropertyFavorite, toggleStoredFavorite, getStoredFavorites } from '../lib/favorites-storage';
 
 const TABS = [
     { key: 'saved', labelKey: 'account.saved', fallback: 'Wishlist (Favoris)', icon: HeartIcon },
@@ -44,7 +44,17 @@ export default function Dashboard({
     initialTab = null,
     customer: initialCustomer,
 }) {
-    const customer = initialCustomer || getStoredUser() || DEMO_USERS.buyer;
+    const customer = initialCustomer || getStoredUser() || {
+        id: 1,
+        name: 'Membre ChiChoc',
+        email: 'user@chichoc.ci',
+        role: 'customer',
+        role_label: 'Membre Vérifié',
+        phone: '+225 07 00 00 00',
+        initials: 'MC',
+        verified: true,
+        saved_count: 0,
+    };
     const { t, locale } = useTranslation();
     const { format } = useMoney();
     const dateLocale = locale === 'fr' ? 'fr-FR' : 'en-GB';
@@ -73,6 +83,17 @@ export default function Dashboard({
     useEffect(() => {
         setSavedList(saved);
     }, [saved]);
+
+    useEffect(() => {
+        const handler = (e) => {
+            if (e.detail?.favorites) {
+                const favIds = e.detail.favorites;
+                setSavedList((prev) => prev.filter((p) => favIds.includes(Number(p.id))));
+            }
+        };
+        window.addEventListener('chichoc:favorites-change', handler);
+        return () => window.removeEventListener('chichoc:favorites-change', handler);
+    }, []);
 
     useEffect(() => {
         setAlertList(priceAlerts);

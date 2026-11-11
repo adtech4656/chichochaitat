@@ -695,6 +695,23 @@ export default function Search({ properties = [], filters: options = {}, stats =
                 </div>
             </div>
 
+            {/* Sticky Floating Mobile Filter Pill for Quick Thumb Access */}
+            <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 lg:hidden pointer-events-auto">
+                <button
+                    type="button"
+                    onClick={() => setDrawerOpen(true)}
+                    className="flex items-center gap-2 rounded-full bg-void-raised/95 px-5 py-3 text-xs font-bold text-heading shadow-[0_8px_30px_rgba(0,0,0,0.7)] backdrop-blur-xl ring-1 ring-neon/50 hover:scale-105 active:scale-95 transition-all cursor-pointer"
+                >
+                    <SearchIcon className="h-4 w-4 text-neon" />
+                    <span>{t('search.filters')}</span>
+                    {activeCount > 0 && (
+                        <span className="grid h-5 w-5 place-items-center rounded-full bg-neon text-[0.6875rem] font-extrabold text-void">
+                            {activeCount}
+                        </span>
+                    )}
+                </button>
+            </div>
+
             {/* Mobile filter drawer */}
             <AnimatePresence>
                 {drawerOpen && (
@@ -720,13 +737,13 @@ export default function Search({ properties = [], filters: options = {}, stats =
                         >
                             <div className="mb-5 flex items-center justify-between">
                                 <p className="font-display text-[1rem] font-semibold text-heading">
-                                    Filters {activeCount > 0 && `· ${activeCount}`}
+                                    {t('search.filters')} {activeCount > 0 && `· ${activeCount}`}
                                 </p>
                                 <button
                                     type="button"
                                     onClick={() => setDrawerOpen(false)}
                                     aria-label="Close filters"
-                                    className="grid h-8 w-8 place-items-center rounded-full text-body/70 hover:bg-white/10 hover:text-heading"
+                                    className="grid h-8 w-8 place-items-center rounded-full text-body/70 hover:bg-white/10 hover:text-heading cursor-pointer"
                                 >
                                     <CloseIcon className="h-4 w-4" />
                                 </button>
@@ -739,7 +756,7 @@ export default function Search({ properties = [], filters: options = {}, stats =
                                 className="mt-6 w-full"
                                 onClick={() => setDrawerOpen(false)}
                             >
-                                Show {results.length} results
+                                {t('search.button')} ({results.length})
                             </Button>
                         </motion.div>
                     </motion.div>

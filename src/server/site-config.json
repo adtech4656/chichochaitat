@@ -1,0 +1,29 @@
+{
+  "name": "ChiChoc Habitat",
+  "logoText": "CHIC CHOC",
+  "logoHighlight": "HABITAT",
+  "logoBadge": "Agréé MCLU & CDC-CI",
+  "tagline_fr": "Portail Immobilier Agréé & Tiers de Confiance Séquestre",
+  "tagline_en": "Verified Real Estate Portal & Escrow Intermediary",
+  "subtitle_fr": "Des maisons, des terrains avec ACD et des locaux commerciaux réellement fiables en Côte d’Ivoire.",
+  "subtitle_en": "Trusted homes, titled land with ACD, and commercial space across Côte d’Ivoire.",
+  "phone": "+225 07 00 00 00",
+  "whatsapp": "+225 07 00 00 00",
+  "whatsappMessage_fr": "Bonjour Conciergerie ChiChoc Habitat, je souhaite obtenir des informations.",
+  "whatsappMessage_en": "Hello ChiChoc Habitat Concierge, I would like to inquire about listings.",
+  "email": "contact@chichochabitat.ci",
+  "address": "Cocody Ambassades, Boulevard de France, Abidjan, Côte d’Ivoire",
+  "hours": "Lundi - Samedi : 08h00 - 18h30 (GMT)",
+  "escrowPartner": "Caisse des Dépôts et Consignations (CDC-CI) & Notaires Titulaires",
+  "stats": {
+    "listings": "9.4k",
+    "agents": "1,860",
+    "approval": "98.7%",
+    "response": "< 15 min"
+  },
+  "social": {
+    "facebook": "https://facebook.com/chichochabitat",
+    "instagram": "https://instagram.com/chichochabitat",
+    "linkedin": "https://linkedin.com/company/chichoc-habitat"
+  }
+}

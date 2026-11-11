@@ -5,7 +5,7 @@ import { useTranslation } from '../lib/i18n';
 import { CloseIcon } from './Icons';
 
 export default function CompareFloatingBar() {
-    const { items, removeFromCompare, clearCompare, count, maxItems, compareIds } = useCompare();
+    const { items, removeFromCompare, clearCompare, count, maxItems, compareIds, openCompareDrawer } = useCompare();
     const { t } = useTranslation();
     const { url } = usePage();
 
@@ -94,13 +94,14 @@ export default function CompareFloatingBar() {
                                 {t('compare.clearAll')}
                             </button>
 
-                            <Link
-                                href={compareUrl}
+                            <button
+                                type="button"
+                                onClick={openCompareDrawer}
                                 className="flex items-center gap-2 rounded-xl bg-neon px-4 py-2 text-xs sm:text-sm font-bold text-void hover:bg-neon-bright hover:shadow-[0_0_20px_rgba(102,187,106,0.6)] transition-all cursor-pointer"
                             >
                                 <span>⚖️</span>
                                 <span>{t('compare.compareNow')} ({count})</span>
-                            </Link>
+                            </button>
                         </div>
                     </div>
                 </div>

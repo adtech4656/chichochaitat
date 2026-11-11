@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { Head, Link, router } from '@inertiajs/react';
 import { motion, AnimatePresence } from 'framer-motion';
 import SiteLayout from '../Layouts/SiteLayout';
@@ -9,6 +9,7 @@ import { useTranslation } from '../lib/i18n';
 import { useAuthModal } from '../lib/auth-modal';
 import { page, staggerParent } from '../lib/motion';
 import { cn } from '../lib/utils';
+import { toggleStoredFavorite, getStoredFavorites } from '../lib/favorites-storage';
 
 export default function Wishlist({ savedProperties = [], isGuest = false, user = null }) {
     const { t, locale } = useTranslation();
@@ -16,6 +17,17 @@ export default function Wishlist({ savedProperties = [], isGuest = false, user =
     const [properties, setProperties] = useState(savedProperties);
     const [filterIntent, setFilterIntent] = useState('all'); // 'all' | 'sale' | 'rent'
     const [copied, setCopied] = useState(false);
+
+    useEffect(() => {
+        const handler = (e) => {
+            if (e.detail?.favorites) {
+                const favIds = e.detail.favorites;
+                setProperties((prev) => prev.filter((p) => favIds.includes(Number(p.id))));
+            }
+        };
+        window.addEventListener('chichoc:favorites-change', handler);
+        return () => window.removeEventListener('chichoc:favorites-change', handler);
+    }, []);
 
     const counts = useMemo(() => {
         const total = properties.length;
@@ -38,12 +50,8 @@ export default function Wishlist({ savedProperties = [], isGuest = false, user =
     };
 
     const handleRemove = (propertyId) => {
+        toggleStoredFavorite(propertyId);
         setProperties((prev) => prev.filter((p) => p.id !== propertyId));
-        router.post(
-            `/properties/${propertyId}/save`,
-            {},
-            { preserveScroll: true, preserveState: true }
-        );
     };
 
     return (

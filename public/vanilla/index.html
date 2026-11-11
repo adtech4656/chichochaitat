@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="fr" class="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ChiChoc Habitat — Version HTML / CSS / JS / GSAP</title>
+  <meta name="description" content="Portail immobilier agréé en Côte d'Ivoire. Version Vanilla HTML/CSS/JS animée par GSAP et propulsée par le backend Node.js Express." />
+  <link rel="stylesheet" href="/vanilla/style.css" />
+  <!-- GSAP CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+</head>
+<body>
+
+  <!-- Top Navigation Bar -->
+  <header class="header">
+    <div class="header-container">
+      <a href="/vanilla/" class="brand">
+        <span style="font-size: 1.5rem;">🏡</span>
+        <div>
+          <span id="brand-title" style="font-weight: 800; font-size: 1.1rem; letter-spacing: -0.02em;">
+            CHIC CHOC <span class="text-gradient">HABITAT</span>
+          </span>
+          <span class="brand-badge">Agréé MCLU & CDC-CI</span>
+        </div>
+      </a>
+
+      <div class="nav-actions">
+        <a href="/properties" class="btn" style="border-color: rgba(102, 187, 106, 0.4); color: #66BB6A;">
+          Mode React Interactif ⚡
+        </a>
+        <a href="/wishlist" class="btn">
+          <span>❤️</span>
+          <span>Favoris (<span id="fav-count">0</span>)</span>
+        </a>
+        <a href="/demande" class="btn btn-primary">
+          Mandat sur-mesure
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <main>
+    <section class="hero">
+      <div class="hero-badge">
+        <span>🛡️</span>
+        <span>Plateforme Immobilière Certifiée · Côte d’Ivoire</span>
+      </div>
+
+      <h1 class="hero-title">
+        Trouvez votre <span class="text-gradient">habitat vérifié</span> en toute confiance.
+      </h1>
+
+      <p class="hero-subtitle">
+        Des maisons, des terrains avec ACD et des locaux commerciaux réellement fiables. Chaque photo prise sur place par GPS, chaque agent audité sous agrément officiel, chaque transaction sous séquestre notarié.
+      </p>
+
+      <!-- Search Card Bar -->
+      <div class="search-card">
+        <div class="search-field">
+          <label for="search-city">Localisation</label>
+          <select id="search-city">
+            <option value="all">Toutes les villes</option>
+          </select>
+        </div>
+
+        <div class="search-field">
+          <label for="search-type">Type de bien</label>
+          <select id="search-type">
+            <option value="all">Tous les types</option>
+          </select>
+        </div>
+
+        <div class="search-field">
+          <label for="search-intent">Projet</label>
+          <select id="search-intent">
+            <option value="all">Acheter ou Louer</option>
+            <option value="sale">À Vendre (Achat)</option>
+            <option value="rent">À Louer (Bail)</option>
+          </select>
+        </div>
+
+        <button type="button" id="search-btn" class="btn btn-primary" style="padding: 0.75rem 1.75rem; font-size: 0.875rem;">
+          <span>🔍</span> Rechercher
+        </button>
+      </div>
+
+      <!-- Legal Intermediation Protocol Notice -->
+      <div class="notice-box">
+        <strong>⚖️ Protocole d'Intermédiation Strict :</strong> Les paiements et acomptes s'effectuent exclusivement sous séquestre titulaire (CDC-CI et Notaires agréés). Aucun règlement direct non supervisé n'est autorisé afin d'éradiquer toute tentative de litige foncier ou d'escroquerie.
+      </div>
+    </section>
+
+    <!-- Properties Showcase -->
+    <section class="section">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">Annonces Vérifiées Disponibles</h2>
+          <p style="color: var(--text-muted); font-size: 0.875rem; margin-top: 0.25rem;">
+            Données synchronisées en direct avec l'API Node.js & Express.
+          </p>
+        </div>
+        <a href="/properties" class="btn">
+          Ouvrir l'explorateur complet →
+        </a>
+      </div>
+
+      <div id="property-grid" class="grid-properties">
+        <!-- Rendered by app.js with GSAP animations -->
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p style="font-weight: bold; color: #FFF; margin-bottom: 0.5rem;">ChiChoc Habitat · Tiers de Confiance Foncier & Immobilier</p>
+    <p id="footer-contact">contact@chichochabitat.ci · +225 07 00 00 00</p>
+    <p style="margin-top: 1rem; font-size: 0.75rem; color: #64748B;">
+      Backend : Node.js avec Express & TypeScript | Frontend : HTML5 / CSS3 / Vanilla JS / GSAP & React / Vue
+    </p>
+  </footer>
+
+  <script src="/vanilla/app.js"></script>
+</body>
+</html>
